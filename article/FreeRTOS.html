@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="U-pa3X9SQNEi6HMQiD8Mr_9DhJ1meQ_ixQLSkBseAf0">
+  <meta name="msvalidate.01" content="3A4D40B11C833304044E8715D0F9AB08">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yuhengwei2001.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.19.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#DC143C","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="FreeRTOS学习日志,由于工作原因,目前这棵技能树不作为主要发展方向了,该类型博客无限期停更…">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FreeRTOS">
+<meta property="og:url" content="https://yuhengwei2001.github.io/article/FreeRTOS.html">
+<meta property="og:site_name" content="Rain的小破站">
+<meta property="og:description" content="FreeRTOS学习日志,由于工作原因,目前这棵技能树不作为主要发展方向了,该类型博客无限期停更…">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/f29e34a84c094b03842a3e6e19082770.png">
+<meta property="article:published_time" content="2024-02-22T10:47:06.000Z">
+<meta property="article:modified_time" content="2024-03-11T06:54:21.766Z">
+<meta property="article:author" content="Rain">
+<meta property="article:tag" content="FPGA、Vivado、通信基站、基带数字信号处理、嵌入式技术等">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/f29e34a84c094b03842a3e6e19082770.png">
+
+
+<link rel="canonical" href="https://yuhengwei2001.github.io/article/FreeRTOS">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://yuhengwei2001.github.io/article/FreeRTOS.html","path":"/article/FreeRTOS.html","title":"FreeRTOS"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>FreeRTOS | Rain的小破站</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Rain的小破站</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">不知名的FPGA工程师的小破站</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-分类"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-时间轴"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>时间轴</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%85%B3%E4%BA%8E-osThreadNew"><span class="nav-number">1.</span> <span class="nav-text">1.关于 osThreadNew ()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-FreeRTOS%E7%BA%BF%E7%A8%8B%E4%B8%8E%E4%BB%BB%E5%8A%A1%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 FreeRTOS线程与任务的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-osThreadNew"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 osThreadNew ()</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-1-osThreadNew-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E4%B8%8E%E9%9D%99%E6%80%81%E5%88%9B%E5%BB%BA%E7%9A%84%E9%80%89%E6%8B%A9"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.2.1 osThreadNew ()如何实现动态创建与静态创建的选择</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-2-xTaskCreate-%E4%BB%BB%E5%8A%A1%E6%A0%88%E7%A9%BA%E9%97%B4%E7%90%86%E8%A7%A3"><span class="nav-number">1.2.2.</span> <span class="nav-text">1.2.2 xTaskCreate()任务栈空间理解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-3-CMSIS-OS%E4%B8%8EFreeRTOS%E4%BB%BB%E5%8A%A1%E6%A0%88%E7%A9%BA%E9%97%B4%E5%8D%95%E4%BD%8D%E4%B8%8D%E5%90%8C%EF%BC%81"><span class="nav-number">1.2.3.</span> <span class="nav-text">1.2.3 CMSIS-OS与FreeRTOS任务栈空间单位不同！</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-4-%E9%80%89%E6%8B%A9%E5%8A%A8%E6%80%81%E5%88%86%E9%85%8D%E6%97%B6osThreadNew-%E5%88%86%E9%85%8D%E7%9A%84%E4%BB%BB%E5%8A%A1%E6%A0%88%E7%A9%BA%E9%97%B4"><span class="nav-number">1.2.4.</span> <span class="nav-text">1.2.4 选择动态分配时osThreadNew()分配的任务栈空间</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Rain"
+      src="/uploads/custom-logo.png">
+  <p class="site-author-name" itemprop="name">Rain</p>
+  <div class="site-description" itemprop="description">FPGA、Xilinx、通信基站、基带数字信号处理、嵌入式技术等</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl1aGVuZ3dlaTIwMDFAZ21haWwuY29t" title="E-Mail → mailto:yuhengwei2001@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1l1SFdFSQ==" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;YuHWEI"><i class="fa custom csdn fa-fw"></i>CSDN</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <span class="exturl" data-url="aHR0cHM6Ly9jeGNjLWNvZGUuZ2l0aHViLmlvLw==" title="https:&#x2F;&#x2F;cxcc-code.github.io&#x2F;">无所不能老学长的Blog</span>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yuhengwei2001.github.io/article/FreeRTOS.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/custom-logo.png">
+      <meta itemprop="name" content="Rain">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rain的小破站">
+      <meta itemprop="description" content="FPGA、Xilinx、通信基站、基带数字信号处理、嵌入式技术等">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="FreeRTOS | Rain的小破站">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          FreeRTOS
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-02-22 18:47:06" itemprop="dateCreated datePublished" datetime="2024-02-22T18:47:06+08:00">2024-02-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-03-11 14:54:21" itemprop="dateModified" datetime="2024-03-11T14:54:21+08:00">2024-03-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">嵌入式</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>10 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><blockquote>
+<p>FreeRTOS学习日志,由于工作原因,目前这棵技能树不作为主要发展方向了,该类型博客无限期停更…</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="1-关于-osThreadNew"><a href="#1-关于-osThreadNew" class="headerlink" title="1.关于 osThreadNew ()"></a>1.关于 osThreadNew ()</h2><h3 id="1-1-FreeRTOS线程与任务的关系"><a href="#1-1-FreeRTOS线程与任务的关系" class="headerlink" title="1.1 FreeRTOS线程与任务的关系"></a>1.1 FreeRTOS线程与任务的关系</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">osThreadId_t <span class="title function_">osThreadNew</span> <span class="params">(osThreadFunc_t func, </span></span><br><span class="line"><span class="params">						  <span class="type">void</span> *argument, </span></span><br><span class="line"><span class="params">						  <span class="type">const</span> osThreadAttr_t *attr)</span></span><br><span class="line"><span class="comment">/*******************************没有感情的分界线********************/</span></span><br><span class="line">BaseType_t <span class="title function_">xTaskCreate</span><span class="params">(	TaskFunction_t pxTaskCode,</span></span><br><span class="line"><span class="params">						<span class="type">const</span> <span class="type">char</span> * <span class="type">const</span> pcName,</span></span><br><span class="line"><span class="params">						<span class="type">const</span> configSTACK_DEPTH_TYPE usStackDepth,</span></span><br><span class="line"><span class="params">						<span class="type">void</span> * <span class="type">const</span> pvParameters,</span></span><br><span class="line"><span class="params">						UBaseType_t uxPriority,</span></span><br><span class="line"><span class="params">						TaskHandle_t * <span class="type">const</span> pxCreatedTask )</span></span><br><span class="line">TaskHandle_t <span class="title function_">xTaskCreateStatic</span><span class="params">(	TaskFunction_t pxTaskCode,</span></span><br><span class="line"><span class="params">								<span class="type">const</span> <span class="type">char</span> * <span class="type">const</span> pcName,		</span></span><br><span class="line"><span class="params">								<span class="type">const</span> <span class="type">uint32_t</span> ulStackDepth,</span></span><br><span class="line"><span class="params">								<span class="type">void</span> * <span class="type">const</span> pvParameters,</span></span><br><span class="line"><span class="params">								UBaseType_t uxPriority,</span></span><br><span class="line"><span class="params">								StackType_t * <span class="type">const</span> puxStackBuffer,</span></span><br><span class="line"><span class="params">								StaticTask_t * <span class="type">const</span> pxTaskBuffer )</span></span><br></pre></td></tr></table></figure>
+<p>先后分别是CMSIS-OS和FreeRTOS提供的任务创建API，函数名给我带来了一个疑问<strong>线程和任务之间的关系</strong>，翻阅资料后找到如下解释。</p>
+<blockquote>
+<p>在多数通用（分时）操作系统（如Linux，Windows）中，进程是系统资源分配的最小单位，线程为CPU调度的最小单元。而在实时操作系统中，多数情况下不区分线程与进程进行独立管理，为了减小系统资源占用以及提高实时性，往往将线程与进程合二为一，采用任务（一个个独立且无法返回的函数）作为应用程序的最小调度运行单元，使用TCB（任务控制块）对任务进行管理，FreeRTOS即是如此。<br>    结论：像FreeRTOS这样的轻量级OS，其中的任务与线程的含义一致，即在FreeRTOS上跑的整个程序即为一个进程，该进程中又包含着多个线程（任务），这些线程有些是系统自动创建的，有些为用户手动创建。<br>                                                    <span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80ODIwNjI3MC9hcnRpY2xlL2RldGFpbHMvMTI0MTAyNTQ0">原文链接<i class="fa fa-external-link-alt"></i></span></p>
+</blockquote>
+<p><strong>翻阅ST提供的用户手册得到如下信息。</strong></p>
+<blockquote>
+<p>本用户手册的目标读者为在 STM32 微控制器上使用 STM32Cube 固件的开发者。它完整描述了如何使用具有实时操作系统 （RTOS）的 STM32Cube 固件组件；本用户手册还提供了一组示例说明，它们基于 FreeRTOS，使用 CMSIS-OS 封装层提供的通用 API。<br> 在 STM32Cube 固件中，通过 ARM 提供的通用 CMSIS-OS 封装层，FreeRTOS 用作实时操作系统。使用 FreeRTOS 的样例和应用可直接移植到其它任何 RTOS 而不需要修改高层API，在此情况下仅需更改 CMSIS-OS 封装。</p>
+</blockquote>
+<ul>
+<li>   <strong>结论:osThreadNew()是ARM的CMSIS-OS的封装层API，内部包含了FreeRTOS的<br>   动态任务创建xTaskCreate()<br>   静态任务创建xTaskCreateStatic()<br>   根据参数选择选择调用动态还是静态创建，具体实现后文给出。</strong></li>
+</ul>
+<h3 id="1-2-osThreadNew"><a href="#1-2-osThreadNew" class="headerlink" title="1.2 osThreadNew ()"></a>1.2 osThreadNew ()</h3><h4 id="1-2-1-osThreadNew-如何实现动态创建与静态创建的选择"><a href="#1-2-1-osThreadNew-如何实现动态创建与静态创建的选择" class="headerlink" title="1.2.1 osThreadNew ()如何实现动态创建与静态创建的选择"></a>1.2.1 osThreadNew ()如何实现动态创建与静态创建的选择</h4><p>从前文已知osThreadNew()是ARM提供的上层封装，那么具体是如何实现动态与静态的选择。<br>翻阅源码发现原理在于其参数的选择，一下给出源码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">osThreadId_t <span class="title function_">osThreadNew</span> <span class="params">(osThreadFunc_t func, <span class="type">void</span> *argument, <span class="type">const</span> osThreadAttr_t *attr)</span> &#123;</span><br><span class="line">  <span class="type">char</span> empty;</span><br><span class="line">  <span class="type">const</span> <span class="type">char</span> *name;</span><br><span class="line">  <span class="type">uint32_t</span> <span class="built_in">stack</span>;</span><br><span class="line">  TaskHandle_t hTask;</span><br><span class="line">  UBaseType_t prio;</span><br><span class="line">  <span class="type">int32_t</span> mem;</span><br><span class="line"></span><br><span class="line">  hTask = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (!IS_IRQ() &amp;&amp; (func != <span class="literal">NULL</span>)) &#123;</span><br><span class="line">    <span class="built_in">stack</span> = configMINIMAL_STACK_SIZE;</span><br><span class="line">    prio  = (UBaseType_t)osPriorityNormal;</span><br><span class="line"></span><br><span class="line">    empty = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">    name  = &amp;empty;</span><br><span class="line">    mem   = <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (attr != <span class="literal">NULL</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (attr-&gt;name != <span class="literal">NULL</span>) &#123;</span><br><span class="line">        name = attr-&gt;name;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (attr-&gt;priority != osPriorityNone) &#123;</span><br><span class="line">        prio = (UBaseType_t)attr-&gt;priority;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> ((prio &lt; osPriorityIdle) || (prio &gt; osPriorityISR) || ((attr-&gt;attr_bits &amp; osThreadJoinable) == osThreadJoinable)) &#123;</span><br><span class="line">        <span class="keyword">return</span> (<span class="literal">NULL</span>);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (attr-&gt;stack_size &gt; <span class="number">0U</span>) &#123;</span><br><span class="line">        <span class="comment">/* In FreeRTOS stack is not in bytes, but in sizeof(StackType_t) which is 4 on ARM ports.       */</span></span><br><span class="line">        <span class="comment">/* Stack size should be therefore 4 byte aligned in order to avoid division caused side effects */</span></span><br><span class="line">        <span class="built_in">stack</span> = attr-&gt;stack_size / <span class="keyword">sizeof</span>(StackType_t);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> ((attr-&gt;cb_mem    != <span class="literal">NULL</span>) &amp;&amp; (attr-&gt;cb_size    &gt;= <span class="keyword">sizeof</span>(StaticTask_t)) &amp;&amp;</span><br><span class="line">          (attr-&gt;stack_mem != <span class="literal">NULL</span>) &amp;&amp; (attr-&gt;stack_size &gt;  <span class="number">0U</span>)) &#123;</span><br><span class="line">        mem = <span class="number">1</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> ((attr-&gt;cb_mem == <span class="literal">NULL</span>) &amp;&amp; (attr-&gt;cb_size == <span class="number">0U</span>) &amp;&amp; (attr-&gt;stack_mem == <span class="literal">NULL</span>)) &#123;</span><br><span class="line">          mem = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      mem = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (mem == <span class="number">1</span>) &#123;</span><br><span class="line">      hTask = xTaskCreateStatic ((TaskFunction_t)func, name, <span class="built_in">stack</span>, argument, prio, (StackType_t  *)attr-&gt;stack_mem,</span><br><span class="line">                                                                                    (StaticTask_t *)attr-&gt;cb_mem);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (mem == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (xTaskCreate ((TaskFunction_t)func, name, (<span class="type">uint16_t</span>)<span class="built_in">stack</span>, argument, prio, &amp;hTask) != pdPASS) &#123;</span><br><span class="line">          hTask = <span class="literal">NULL</span>;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> ((osThreadId_t)hTask);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>在末尾可以看出使用哪一种创建方式由参数<code>mem</code>决定，阅读前文发现只有</p>
+<ul>
+<li>当<code>attr-&gt;stack_mem</code>有值且指定用户数组以及任务控制块地址时的时候会使得<code>mem</code>置1，此时调用的时静态创建任务函数。</li>
+<li>当<code>attr-&gt;stack_mem</code>没有值的时候会使得<code>mem</code>置0，此时调用的时动态创建任务函数。</li>
+</ul>
+</li>
+<li><p>而<code>attr-&gt;stack_mem</code>的值是由<code>const osThreadAttr_t *attr</code>形参结构体中取得，在创建任务的时候需要定义一个结构体作为参数传入osThreadNew()中，CubeMX给出的默认任务参数如下。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">osThreadId_t startTaskHandle;</span><br><span class="line"><span class="type">const</span> osThreadAttr_t startTask_attributes = &#123;</span><br><span class="line">  .name = <span class="string">&quot;startTask&quot;</span>,</span><br><span class="line">  .stack_size = <span class="number">128</span> * <span class="number">4</span>,  <span class="comment">//0.5KB</span></span><br><span class="line">  .priority = (osPriority_t) osPriorityLow3,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>必须同时给出任务栈大小，任务堆栈，任务控制块地址才能调用静态创建任务函数，否则只取<code>attr-&gt;stack_mem</code>的值作为任务栈大小动态创建任务。若连<code>attr-&gt;stack_mem</code>都未给出，则取系统默认设置为任务栈大小动态创建任务。</p>
+</li>
+</ul>
+<h4 id="1-2-2-xTaskCreate-任务栈空间理解"><a href="#1-2-2-xTaskCreate-任务栈空间理解" class="headerlink" title="1.2.2 xTaskCreate()任务栈空间理解"></a>1.2.2 xTaskCreate()任务栈空间理解</h4><p>在阅读动态创建函数传参时候发现，居然也有任务栈空间这一项参数，而我记得我阅读操作手册的时候写的是动态任务创建任务栈空间由操作系统分配，归操作系统管理，那么为什么还要传这一个参数呢。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xTaskCreate ((TaskFunction_t)func, name, (<span class="type">uint16_t</span>)<span class="built_in">stack</span>, argument, prio, &amp;hTask) </span><br></pre></td></tr></table></figure>
+
+<p>回去重新阅读了操作手册发现自己理解错误，以下贴出操作手册原文。</p>
+<blockquote>
+<p>每个任务都需要 RAM 来保存任务状态，并由任务用作其堆栈。 如果使用 xTaskCreate() 创建任务，则所需的 RAM 将自动 从 FreeRTOS 堆中分配。 如果创建任务 使用了 xTaskCreateStatic()，则 RAM 由应用程序编写者提供，因此可以在编译时进行静态分配。</p>
+</blockquote>
+<ul>
+<li>在<strong>动态创建</strong>任务时也是<strong>需要指定任务栈空间</strong>的，但此时任务栈空间是由操作系统从<strong>自己管理的堆</strong>中分配的，管理权归操作系统。</li>
+<li>在<strong>静态创建</strong>任务时候，指定的任务栈空间是由用户自己提供的，而占用的空间是在RAM中除去RTOS所管理的堆剩下的空间中提供的，所以不由RTOS管理。</li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZnJlZXJ0b3Mub3JnL3poLWNuLWNtbi1zL2EwMDEyNS5odG1s">这里给出FreeRTOS官网开发者手册关于xTaskCreate描述的地址<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZnJlZXJ0b3Mub3JnL3poLWNuLWNtbi1zL1N0YXRpY19Wc19EeW5hbWljX01lbW9yeV9BbGxvY2F0aW9uLmh0bWw=">这里给出FreeRTOS官网开发者手册关于静态与动态创建任务描述的地址<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+<p><strong>所以实际上动态创建任务也是需要指定任务栈空间的，但是我们创建时并没有给出参数，他又是传了什么进去呢？</strong></p>
+<p>阅读上文源码发现，该参数一开始就被赋值了<br><code>stack = configMINIMAL_STACK_SIZE</code><br>其中<br><code>configMINIMAL_STACK_SIZE</code><br>是个宏定义，我们在<em>FreeRTOSConfig.h</em>文件中找到了定义<br><code>#define configMINIMAL_STACK_SIZE                 ((uint16_t)128)</code></p>
+<ul>
+<li>也就是说当我们不指定任务栈空间，CMSIS-OS提供的封装帮我自动设置了任务栈空间，并且调用动态创建任务函数。</li>
+</ul>
+<h4 id="1-2-3-CMSIS-OS与FreeRTOS任务栈空间单位不同！"><a href="#1-2-3-CMSIS-OS与FreeRTOS任务栈空间单位不同！" class="headerlink" title="1.2.3 CMSIS-OS与FreeRTOS任务栈空间单位不同！"></a>1.2.3 CMSIS-OS与FreeRTOS任务栈空间单位不同！</h4><p>接下来我遇到了最坑的一个点，如题所说，CMSIS-OS与FreeRTOS任务栈空间单位不同。</p>
+<ul>
+<li>在学习FreeRTOS时我观看了<em>正点原子</em>的视频，包括在网上搜索的资料都是面向FreeRTOS的。而FreeRTOS提供的创建任务函数中指定任务栈大小的参数<code>stack</code>其单位是<strong>字</strong>。<blockquote>
+<p>在stm32中，1字&#x3D;4字节     1字节&#x3D;8位</p>
+</blockquote>
+</li>
+</ul>
+<p>所以，我理所当然（我大意了）的认为<code>osThreadNew()</code>参数中的<code>stack_size </code>其单位也是字，所以在计算的时候一直当作字来计算。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> osThreadAttr_t startTask_attributes = &#123;</span><br><span class="line">  .name = <span class="string">&quot;startTask&quot;</span>,</span><br><span class="line">  .stack_size = <span class="number">128</span> * <span class="number">4</span>,</span><br><span class="line">  .priority = (osPriority_t) osPriorityLow3,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>并且，在这个函数中的注释写了</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* In FreeRTOS stack is not in bytes, but in sizeof(StackType_t) which is 4 on ARM ports.       */</span></span><br><span class="line"><span class="comment">/* Stack size should be therefore 4 byte aligned in order to avoid division caused side effects */</span></span><br><span class="line">翻译过来就是</span><br><span class="line"><span class="comment">/*在FreeRTOS中，堆栈不是以字节为单位，而是以sizeof（StackType_t）为单位，在ARM端口上为4*/</span></span><br><span class="line"><span class="comment">/*因此，堆栈大小应为4字节对齐，以避免除法造成的副作用*/</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p> 但当我调试时候计算栈空间时发现不太对劲，具体怎么发现的我就不说了，反正不是很聪明的样子。贴个调试图。<br> <img data-src="https://img-blog.csdnimg.cn/f29e34a84c094b03842a3e6e19082770.png" alt="在这里插入图片描述"><br>在和老学长一番争论，并且重新翻阅源码以及用户手册后我突然发现在注释的前后写了一段代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (attr-&gt;stack_size &gt; <span class="number">0U</span>) &#123;</span><br><span class="line">  <span class="comment">/* In FreeRTOS stack is not in bytes, but in sizeof(StackType_t) which is 4 on ARM ports.       */</span></span><br><span class="line">  <span class="comment">/* Stack size should be therefore 4 byte aligned in order to avoid division caused side effects */</span></span><br><span class="line">  <span class="built_in">stack</span> = attr-&gt;stack_size / <span class="keyword">sizeof</span>(StackType_t);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>他把我传进去的参数除了一个<code>StackType_t</code>大小。<br>查阅其定义发现<br><code>typedef portSTACK_TYPE StackType_t;</code><br><code>#define portSTACK_TYPE	uint32_t</code></p>
+<blockquote>
+<p>这个类型大小32位，8位1字节，也就4个字节，1个字。<br><code>sizeof()</code>用于返回运算对象的内存大小，单位是字节。<br>所以<code>sizeof(StackType_t)=4</code></p>
+</blockquote>
+<ul>
+<li>也就是说在<code>osThreadNew()</code>的任务栈空间参数在经过ARM封装后实际上是以“字节”为单位的，所以也就是说我我传进来的数字实际上是 <code>128 * 4=512字节/4=128字</code>赋给了<code>stack </code>。</li>
+</ul>
+<p>这里贴出官网对参数<code>usStackDepth  </code>也就是<code>stack </code>赋给的形参值的介绍与地址。<span class="exturl" data-url="aHR0cHM6Ly93d3cuZnJlZXJ0b3Mub3JnL3poLWNuLWNtbi1zL2EwMDEyNS5odG1s">用户手册参数介绍地址<i class="fa fa-external-link-alt"></i></span></p>
+<blockquote>
+<p>要分配用于 任务堆栈的 字数（不是字节）。例如，如果堆栈的宽度为 16 位，usStackDepth 为 100，则将分配 200 字节用作该任务的堆栈。 再举一例，如果堆栈的宽度为 32 位，usStackDepth 为 400，则将分配 1600 字节用作该任务的堆栈。<br>堆栈深度与堆栈宽度的乘积不得超过 size_t 类型变量所能包含的最大值。</p>
+</blockquote>
+<h4 id="1-2-4-选择动态分配时osThreadNew-分配的任务栈空间"><a href="#1-2-4-选择动态分配时osThreadNew-分配的任务栈空间" class="headerlink" title="1.2.4 选择动态分配时osThreadNew()分配的任务栈空间"></a>1.2.4 选择动态分配时osThreadNew()分配的任务栈空间</h4><p>这个比较好找，直接阅读源码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">osThreadId_t <span class="title function_">osThreadNew</span> <span class="params">(osThreadFunc_t func, <span class="type">void</span> *argument, <span class="type">const</span> osThreadAttr_t *attr)</span> &#123;</span><br><span class="line">  <span class="type">char</span> empty;</span><br><span class="line">  <span class="type">const</span> <span class="type">char</span> *name;</span><br><span class="line">  <span class="type">uint32_t</span> <span class="built_in">stack</span>;</span><br><span class="line">  TaskHandle_t hTask;</span><br><span class="line">  UBaseType_t prio;</span><br><span class="line">  <span class="type">int32_t</span> mem;</span><br><span class="line"></span><br><span class="line">  hTask = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (!IS_IRQ() &amp;&amp; (func != <span class="literal">NULL</span>)) &#123;</span><br><span class="line">    <span class="built_in">stack</span> = configMINIMAL_STACK_SIZE;</span><br><span class="line">    prio  = (UBaseType_t)osPriorityNormal;</span><br><span class="line"></span><br><span class="line">    empty = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">    name  = &amp;empty;</span><br><span class="line">    mem   = <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (attr != <span class="literal">NULL</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (attr-&gt;name != <span class="literal">NULL</span>) &#123;</span><br><span class="line">        name = attr-&gt;name;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (attr-&gt;priority != osPriorityNone) &#123;</span><br><span class="line">        prio = (UBaseType_t)attr-&gt;priority;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> ((prio &lt; osPriorityIdle) || (prio &gt; osPriorityISR) || ((attr-&gt;attr_bits &amp; osThreadJoinable) == osThreadJoinable)) &#123;</span><br><span class="line">        <span class="keyword">return</span> (<span class="literal">NULL</span>);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (attr-&gt;stack_size &gt; <span class="number">0U</span>) &#123;</span><br><span class="line">        <span class="comment">/* In FreeRTOS stack is not in bytes, but in sizeof(StackType_t) which is 4 on ARM ports.       */</span></span><br><span class="line">        <span class="comment">/* Stack size should be therefore 4 byte aligned in order to avoid division caused side effects */</span></span><br><span class="line">        <span class="built_in">stack</span> = attr-&gt;stack_size / <span class="keyword">sizeof</span>(StackType_t);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> ((attr-&gt;cb_mem    != <span class="literal">NULL</span>) &amp;&amp; (attr-&gt;cb_size    &gt;= <span class="keyword">sizeof</span>(StaticTask_t)) &amp;&amp;</span><br><span class="line">          (attr-&gt;stack_mem != <span class="literal">NULL</span>) &amp;&amp; (attr-&gt;stack_size &gt;  <span class="number">0U</span>)) &#123;</span><br><span class="line">        mem = <span class="number">1</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> ((attr-&gt;cb_mem == <span class="literal">NULL</span>) &amp;&amp; (attr-&gt;cb_size == <span class="number">0U</span>) &amp;&amp; (attr-&gt;stack_mem == <span class="literal">NULL</span>)) &#123;</span><br><span class="line">          mem = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      mem = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (mem == <span class="number">1</span>) &#123;</span><br><span class="line">      hTask = xTaskCreateStatic ((TaskFunction_t)func, name, <span class="built_in">stack</span>, argument, prio, (StackType_t  *)attr-&gt;stack_mem,</span><br><span class="line">                                                                                    (StaticTask_t *)attr-&gt;cb_mem);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (mem == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (xTaskCreate ((TaskFunction_t)func, name, (<span class="type">uint16_t</span>)<span class="built_in">stack</span>, argument, prio, &amp;hTask) != pdPASS) &#123;</span><br><span class="line">          hTask = <span class="literal">NULL</span>;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> ((osThreadId_t)hTask);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在函数开头<code>    stack = configMINIMAL_STACK_SIZE;</code></p>
+<p>参数<code>stack</code>在<code>osThreadNew()</code>函数一开始就被赋值了，若参数<code>attr-&gt;stack_mem</code>缺省，则<code>stack</code>值不会被改变。翻找<code>configMINIMAL_STACK_SIZE</code>定义。<br><code>#define configMINIMAL_STACK_SIZE                 ((uint16_t)128)</code></p>
+<ul>
+<li>也就是说当用户不指定任务栈空间，CMSIS-OS会自动给用户分配128<strong>字</strong>的任务栈。而只有<code>attr-&gt;stack_size </code>的值大于0的时候，才会被除4。</li>
+<li>所以此时的128是以<strong>字</strong>为单位的。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (attr-&gt;stack_size &gt; <span class="number">0U</span>) &#123;</span><br><span class="line">  <span class="comment">/* In FreeRTOS stack is not in bytes, but in sizeof(StackType_t) which is 4 on ARM ports.       */</span></span><br><span class="line">  <span class="comment">/* Stack size should be therefore 4 byte aligned in order to avoid division caused side effects */</span></span><br><span class="line">  <span class="built_in">stack</span> = attr-&gt;stack_size / <span class="keyword">sizeof</span>(StackType_t);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>结论:
+1.使用静态任务创建需要用户自己指定内存空间大小，参数单位是“字节”，并调用xTaskCreateStatic()。
+2.使用动态任务创建CMSIS-OS指定了任务栈大小128字，并调用xTaskCreate()。
+3.用户可以根据需要修改configMINIMAL_STACK_SIZE宏定义的值，来修改attr-&gt;stack_size缺省时任务栈大小的默认值。
+</code></pre>
+<hr>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Rain
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://yuhengwei2001.github.io/article/FreeRTOS.html" title="FreeRTOS">https://yuhengwei2001.github.io/article/FreeRTOS.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/article/Mathematical.html" rel="prev" title="本站数学方程式渲染模板">
+                  <i class="fa fa-angle-left"></i> 本站数学方程式渲染模板
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/article/Vivado_Log_Resolution.html" rel="next" title="ViVado报错记录及解决方式">
+                  ViVado报错记录及解决方式 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2023 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa custom nationalflag"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Rain</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">10k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">38 分钟</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"yuhengwei2001","repo":"yuhengwei2001.github.io","client_id":"25f9efa2950e7a09ca0e","client_secret":"09f2c57365dd5ce650b18df469855329d3a5944b","admin_user":"yuhengwei2001","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"d338899e49f245efd0571bc28383a47e"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>
