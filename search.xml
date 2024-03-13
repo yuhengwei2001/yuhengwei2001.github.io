@@ -1,6 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>数字下变频(DDC)、数字上变频(DUC)</title>
+    <url>//article/DDC_DUC.html</url>
+    <content><![CDATA[<blockquote>
+<p>概述了数字变频的数学原理与实际使用情况,使用Matlab仿真,先构造频域连续的宽带信号模拟基带数字信号,如果利用傅里叶反变换构造了时域信号用于仿真.文章给出了仿真代码与结果图.</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在无线通信中，数据由核心网下传至基站，基站经过处理后变成电磁信号对外发送，最后到达用户端。在基站中，核心网下发的未被处理过的数字信号被称为基带信号。基带信号通常是零频宽&#x2F;窄带信号。基带信号的采样率较低，不能满足射频发射的要求，所以基带信号往往经过滤波和内插转换成高采样率，从而调制到中频载波频率上.<br>此时若基站接收到两路不同的基带信号，则无法做模拟上变频到同一频段，因为从频谱上看两个基带信号频谱叠加了，<a href="#%E9%A2%91%E8%B0%B1%E5%8F%A0%E5%8A%A0"><strong>相互干扰</strong></a>。若使用两个频段对外发送则过于浪费频谱资源了。在同一空间内，通信信道是有限的，因此需要在模拟上变频之前先做数字上变频，将两路基带信号调制到一起，成为在频谱上连续的基带信号后，做模拟上变频，调制到中高频后对外发送。这样就只会占用一条中频带，节约了无线资源。</p>
+<blockquote>
+<p>具体可以看这篇博客<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0hpV2FuZ1dlbkJpbmcvYXJ0aWNsZS9kZXRhaWxzLzExMjMwNjY3Mw==">[4G&amp;5G专题-9]：RRU 数字上变频DUC与数字下变频DDC<i class="fa fa-external-link-alt"></i></span>。</p>
+</blockquote>
+<h2 id="数字上变频-DUC-数学原理"><a href="#数字上变频-DUC-数学原理" class="headerlink" title="数字上变频(DUC)数学原理"></a>数字上变频(DUC)数学原理</h2><p>数字上变频本质是是将一个处于零频的宽带信号搬移至高于零频的频段。原理上就是信号的调制，数学原理可以参考：<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0hpV2FuZ1dlbkJpbmcvYXJ0aWNsZS9kZXRhaWxzLzExMDE2MjU0Ng==">通信系统中的调制解调<i class="fa fa-external-link-alt"></i></span>。</p>
+<p>从公式上看频谱搬移可以通过时域中的信号乘以一个<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zODkzOTgyNi9hcnRpY2xlL2RldGFpbHMvMTAyODkzNjU2">单音信号<i class="fa fa-external-link-alt"></i></span>实现，公式如下:<br>$$<br>y(t) &#x3D; x(t)*cos(\omega_1t)<br>$$</p>
+<p>其中$x(t)$为需要调制的信号，假设也为一个单音信号$sin(\omega_0t)$则:<br>$$<br>\begin{align}<br>y(t) &amp;&#x3D; sin(\omega_0t) * cos(\omega_1t) \nonumber\\<br>     &amp;&#x3D; \frac{sin(\omega_0+\omega_1)+cos(\omega_0-\omega_1)}{2} \nonumber<br>\end{align}<br>$$<br>由上可以得出频谱搬移后会出现镜像分别为$\omega_0+\omega_1$和$\omega_0-\omega_1$这两个频率上。但在基带处理中基带信号一般为<span class="exturl" data-url="aHR0cHM6Ly9yZi5lZWZvY3VzLmNvbS9hcnRpY2xlL2lkLTMzNTk5Ng==">IQ信号<i class="fa fa-external-link-alt"></i></span>，因此用于调制的信号也该是个复数信号。<br>所以有</p>
+<p>$$<br>y(t) &#x3D; x(t)*e^{j2\pi f_0 t}<br>$$</p>
+<p>其中</p>
+<ul>
+<li>$x(t)$是基带信号</li>
+<li>$e^{j2\pi f_0 t}$是复指数信号，可以看作载波信号。</li>
+<li>$f_0$是搬移的频率，决定了搬移的幅度和方向。</li>
+</ul>
+<p>复指数信号的时域表达式为：</p>
+<p>$$<br>    e^{j2\pi f_0 t} &#x3D; \cos(\omega_1t) + j \sin(\omega_1t)<br>$$</p>
+<p>因此从时域上看:<br>$$<br>    y(t) &#x3D; x(t) * [cos(\omega_1t)+jsin(\omega_1t)]<br>$$</p>
+<p>假设基带信号为<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zODkzOTgyNi9hcnRpY2xlL2RldGFpbHMvMTAyODkzNjU2">单音信号<i class="fa fa-external-link-alt"></i></span>,其时域上三角函数表达式为:</p>
+<p>$$<br>    x(t)&#x3D;cos(\omega_0t)+jsin(\omega_0t)<br>$$</p>
+<p>则时域的频谱搬移可以由下表示:<br>$$ \begin{align}<br>    y(t) &amp;&#x3D; [cos(\omega_0t)+jsin(\omega_0t)]*[cos(\omega_1t)+jsin(\omega_1t)] \nonumber\\<br>     &amp;&#x3D;[cos(\omega_0t)cos(\omega_1t)-sin(\omega_0t)sin(\omega_1t)]+j[cos(\omega_0t)sin(\omega_1t)+sin(\omega_0t)cos(\omega_1t)] \nonumber\\<br>     &amp;&#x3D;cos[(\omega_0+\omega_1)t]+jsin[(\omega_0+\omega_1)t] \nonumber<br>\end{align}<br>$$<br>由上面的计算可以看出原信号被搬移到了$\omega_0+\omega_1$上，若想得到位于$\omega_0-\omega_1$的信号则对IQ信号做差运算即可因为在FPGA中基带信号的实部和虚部是存在不同的变量中，可以单独拿出来做运算。复数在变换完成后可以只留下一个频率，这对我们基带处理带来了很大的便利。</p>
+<h2 id="Matlab模拟"><a href="#Matlab模拟" class="headerlink" title="Matlab模拟"></a>Matlab模拟</h2><h3 id="建立基带时域信号"><a href="#建立基带时域信号" class="headerlink" title="建立基带时域信号"></a>建立基带时域信号</h3><p>基带信号一般为零频的宽带或窄带信号，一开始的想法是利用不同频率的正弦波时域叠加构造宽带信号，但是傅里叶变换以后的叠加信号在频域上不连续。于是我反着来，先构建连续的频谱，然后用傅里叶反变换得到时域信号。</p>
+<p>首先创建一个长度为$N$的全0行向量,然后将带宽内的元素全部赋值为1.</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">spectrum = <span class="built_in">zeros</span>(<span class="number">1</span>, N);</span><br><span class="line">spectrum(f &lt;= bandwidth) = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p>我们得到了一个在索引值小于bandwidth时值全为1的行向量，可以认定为信号频谱。于是可以构建两个这样的不同带宽的频谱如下图:</p>
+<center><img data-src="/myImage//宽带信号.svg" width="450" alt="图片描述"></center>
+
+<p>接着为了得到时域信号我们对其做傅里叶反变换，然后再做傅里叶变换得到时域信号的频谱(觉得麻烦这步可以省略):</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">signal = ifft(spectrum);</span><br><span class="line">signal_fft  = fft(signal);</span><br></pre></td></tr></table></figure>
+<p>做傅里叶变换后，在高频会出现镜像，我们舍弃掉高频的部分的数据只讨论基带信号本身。<br>然后将代码简单假工一下做成函数方便一会调用。</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">y</span> = <span class="title">broadband</span><span class="params">(varargin)</span></span></span><br><span class="line">    p = inputParser;            <span class="comment">% 函数的输入解析器</span></span><br><span class="line">    p.addParameter(<span class="string">&#x27;fs&#x27;</span>,<span class="number">1000</span>);  <span class="comment">% 设置变量名和默认参数</span></span><br><span class="line">    p.addParameter(<span class="string">&#x27;T&#x27;</span>,<span class="number">1</span>);      <span class="comment">% 设置变量名和默认参数</span></span><br><span class="line">    p.addParameter(<span class="string">&#x27;bandwidth&#x27;</span>,<span class="number">50</span>);      <span class="comment">% 设置变量名和默认参数</span></span><br><span class="line">    p.parse(varargin&#123;:&#125;);       <span class="comment">% 对输入变量进行解析，如果检测到前面的变量被赋值，则更新变量取值</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">% 生成频谱</span></span><br><span class="line">    N = p.Results.fs*p.Results.T; <span class="comment">% 信号长度</span></span><br><span class="line">    f = <span class="built_in">linspace</span>(<span class="number">0</span>, p.Results.fs, N); <span class="comment">% 频率范围</span></span><br><span class="line">    spectrum = <span class="built_in">zeros</span>(<span class="number">1</span>, N);</span><br><span class="line">    spectrum(f &lt;= p.Results.bandwidth) = <span class="number">1</span>; <span class="comment">% 在带宽内设置频谱幅度为1</span></span><br><span class="line">    <span class="comment">% 生成时域信号</span></span><br><span class="line">    signal = ifft(spectrum);</span><br><span class="line">    <span class="comment">%傅里叶变换</span></span><br><span class="line">    signal_fft  = fft(signal);</span><br><span class="line"></span><br><span class="line">    y.fft = signal_fft(<span class="number">1</span>:<span class="keyword">end</span>/<span class="number">2</span>);</span><br><span class="line">    y.f=f(<span class="number">1</span>:<span class="keyword">end</span>/<span class="number">2</span>);</span><br><span class="line">    y.<span class="built_in">real</span> = signal;</span><br><span class="line">    y.t=<span class="built_in">linspace</span>(<span class="number">0</span>, p.Results.T, N);</span><br><span class="line">    y.n=N;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="建立载波时域信号"><a href="#建立载波时域信号" class="headerlink" title="建立载波时域信号"></a>建立载波时域信号</h3><p>直接生成特定频率的正弦波即可，注意为了一会与基带信号进行运算，要保证生成的信号长度与基带信号相同。函数代码如下</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">y</span> = <span class="title">wave_init</span><span class="params">(varargin)</span></span></span><br><span class="line">    p = inputParser;            <span class="comment">% 函数的输入解析器</span></span><br><span class="line">    p.addParameter(<span class="string">&#x27;fs&#x27;</span>,<span class="number">1000</span>);  <span class="comment">% 设置变量名和默认参数</span></span><br><span class="line">    p.addParameter(<span class="string">&#x27;L&#x27;</span>,<span class="number">1000</span>);      <span class="comment">% 设置变量名和默认参数</span></span><br><span class="line">    p.addParameter(<span class="string">&#x27;a1&#x27;</span>,<span class="number">0</span>);      <span class="comment">% 设置变量名和默认参数</span></span><br><span class="line">    p.addParameter(<span class="string">&#x27;f1&#x27;</span>,<span class="number">0</span>);      <span class="comment">% 设置变量名和默认参数</span></span><br><span class="line">    p.parse(varargin&#123;:&#125;);       <span class="comment">% 对输入变量进行解析，如果检测到前面的变量被赋值，则更新变量取值</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">% 定义参数</span></span><br><span class="line">    T = <span class="number">1</span>/p.Results.fs;               <span class="comment">% 采样间隔</span></span><br><span class="line">    t = (<span class="number">0</span>:p.Results.L<span class="number">-1</span>)*T;          <span class="comment">% 时间向量</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">% 生成正弦波信号</span></span><br><span class="line">    reslut = p.Results.a1*<span class="built_in">sin</span>(<span class="number">2</span>*<span class="built_in">pi</span>*p.Results.f1*t);</span><br><span class="line">    temp_fft=<span class="built_in">abs</span>(fft(reslut)); </span><br><span class="line">    f = <span class="built_in">linspace</span>(<span class="number">0</span>, p.Results.fs, p.Results.L); <span class="comment">% 频率范围</span></span><br><span class="line"></span><br><span class="line">    y.fft = temp_fft(<span class="number">1</span>:<span class="keyword">end</span>/<span class="number">2</span>);</span><br><span class="line">    y.f = f(<span class="number">1</span>:<span class="keyword">end</span>/<span class="number">2</span>);</span><br><span class="line">    y.<span class="built_in">real</span> = reslut;</span><br><span class="line">    y.t = t;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>值得注意，这里是直接使用正弦信号进行快速傅里叶变换，傅里叶变换会将信号从时域转换到频域，得到频谱。频谱是一个复数，包含幅度和相位信息。取绝对值操作后，我们得到了频谱的幅度，这表示了在不同频率下信号的能量分布情况，当然也可以直接对信号进行平方运算，我们就可以的得到信号在频域上的能量分布情况，对信号的功率谱密度进行分析。利用以上函数构造两个频率为100Hz和130Hz的载波信号。</p>
+<center><img data-src="/myImage//载波.svg" width="450" alt="图片描述"></center>
+
+<h3 id="频谱搬移"><a href="#频谱搬移" class="headerlink" title="频谱搬移"></a>频谱搬移</h3><p>根据前文的计算，想要实现频谱搬移需要将基带信号与载波信号相乘。</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">% 宽带信号</span></span><br><span class="line">wave_0 = broadband(<span class="string">&#x27;fs&#x27;</span>,<span class="number">1000</span>,<span class="string">&#x27;T&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;bandwidth&#x27;</span>,<span class="number">30</span>);</span><br><span class="line">wave_1 = broadband(<span class="string">&#x27;fs&#x27;</span>,<span class="number">1000</span>,<span class="string">&#x27;T&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;bandwidth&#x27;</span>,<span class="number">50</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">%载波信号</span></span><br><span class="line">c_wave = wave_init(<span class="string">&#x27;a1&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;f1&#x27;</span>,<span class="number">100</span>);</span><br><span class="line">c_wave_1 = wave_init(<span class="string">&#x27;a1&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;f1&#x27;</span>,<span class="number">130</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% 搬移</span></span><br><span class="line">s_wave = c_wave.<span class="built_in">real</span>.*wave_0.<span class="built_in">real</span>;</span><br><span class="line">s_wave_fft = <span class="built_in">abs</span>(fft(s_wave));</span><br><span class="line"></span><br><span class="line">s_wave_1 = c_wave_1.<span class="built_in">real</span>.*wave_1.<span class="built_in">real</span>;</span><br><span class="line">s_wave_fft_1 = <span class="built_in">abs</span>(fft(s_wave_1));</span><br></pre></td></tr></table></figure>
+
+<p>这是搬移后的频谱</p>
+<center><img data-src="/myImage//调制波.svg" width="450" alt="图片描述"></center>
+
+<p>随后我们再将调制波时域上相加，即可得到一个宽带信号。</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">wave = s_wave + s_wave_1;</span><br><span class="line">wave_fft = <span class="built_in">abs</span>(fft(wave));</span><br></pre></td></tr></table></figure>
+<p>如图:</p>
+<center><img data-src="/myImage//叠加.svg" width="450" alt="图片描述"></center>
+
+<p>若不进行搬移直接叠加会发生干扰，信号无法解调，如图:<a id="频谱叠加"></a></p>
+<center><img data-src="/myImage//简单叠加.svg" width="450" alt="图片描述"></center>
+
+<p>这是主函数调试代码：</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="built_in">figure</span>(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% 宽带信号</span></span><br><span class="line">wave_0 = broadband(<span class="string">&#x27;fs&#x27;</span>,<span class="number">1000</span>,<span class="string">&#x27;T&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;bandwidth&#x27;</span>,<span class="number">30</span>);</span><br><span class="line">wave_1 = broadband(<span class="string">&#x27;fs&#x27;</span>,<span class="number">1000</span>,<span class="string">&#x27;T&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;bandwidth&#x27;</span>,<span class="number">50</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">%载波信号</span></span><br><span class="line">c_wave = wave_init(<span class="string">&#x27;a1&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;f1&#x27;</span>,<span class="number">100</span>);</span><br><span class="line">c_wave_1 = wave_init(<span class="string">&#x27;a1&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;f1&#x27;</span>,<span class="number">130</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% 搬移</span></span><br><span class="line">s_wave = c_wave.<span class="built_in">real</span>.*wave_0.<span class="built_in">real</span>;</span><br><span class="line">s_wave_fft = <span class="built_in">abs</span>(fft(s_wave));</span><br><span class="line"></span><br><span class="line">s_wave_1 = c_wave_1.<span class="built_in">real</span>.*wave_1.<span class="built_in">real</span>;</span><br><span class="line">s_wave_fft_1 = <span class="built_in">abs</span>(fft(s_wave_1));</span><br><span class="line"></span><br><span class="line">wave = s_wave + s_wave_1;</span><br><span class="line">wave_fft = <span class="built_in">abs</span>(fft(wave));</span><br><span class="line"></span><br><span class="line"><span class="comment">% s_wave_2 = wave_0.real + wave_1.real;</span></span><br><span class="line"><span class="comment">% s_wave_2_fft = abs(fft(s_wave_2));</span></span><br><span class="line"><span class="comment">% subplot(1,1,1);</span></span><br><span class="line"><span class="comment">% plot(wave_0.f, s_wave_2_fft(1:end/2));</span></span><br><span class="line"><span class="comment">% title(&quot;叠加频谱&quot;);</span></span><br><span class="line"></span><br><span class="line">subplot(<span class="number">7</span>,<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line"><span class="built_in">plot</span>(wave_0.f, wave_0.fft);</span><br><span class="line">title(<span class="string">&quot;信号α频谱&quot;</span>);</span><br><span class="line"></span><br><span class="line">subplot(<span class="number">7</span>,<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line"><span class="comment">% subplot(2,1,2);</span></span><br><span class="line"><span class="built_in">plot</span>(wave_1.f, wave_1.fft);</span><br><span class="line">title(<span class="string">&quot;信号β频谱&quot;</span>);</span><br><span class="line"></span><br><span class="line">subplot(<span class="number">7</span>,<span class="number">1</span>,<span class="number">3</span>);</span><br><span class="line"><span class="built_in">plot</span>(c_wave.f, c_wave.fft);</span><br><span class="line">title(<span class="string">&quot;载波频谱i&quot;</span>);</span><br><span class="line"></span><br><span class="line">subplot(<span class="number">7</span>,<span class="number">1</span>,<span class="number">4</span>);</span><br><span class="line"><span class="built_in">plot</span>(c_wave.f, c_wave_1.fft);</span><br><span class="line">title(<span class="string">&quot;载波频谱ii&quot;</span>);</span><br><span class="line"></span><br><span class="line">subplot(<span class="number">7</span>,<span class="number">1</span>,<span class="number">5</span>);</span><br><span class="line"><span class="built_in">plot</span>(c_wave.f, s_wave_fft(<span class="number">1</span>:<span class="keyword">end</span>/<span class="number">2</span>));</span><br><span class="line">title(<span class="string">&quot;调制波(α*i)频谱&quot;</span>);</span><br><span class="line"></span><br><span class="line">subplot(<span class="number">7</span>,<span class="number">1</span>,<span class="number">6</span>);</span><br><span class="line"><span class="built_in">plot</span>(c_wave.f, s_wave_fft_1(<span class="number">1</span>:<span class="keyword">end</span>/<span class="number">2</span>));</span><br><span class="line">title(<span class="string">&quot;调制波(β*ii)频谱&quot;</span>);</span><br><span class="line"></span><br><span class="line">subplot(<span class="number">7</span>,<span class="number">1</span>,<span class="number">7</span>);</span><br><span class="line"><span class="built_in">plot</span>(c_wave.f, wave_fft(<span class="number">1</span>:<span class="keyword">end</span>/<span class="number">2</span>));</span><br><span class="line">title(<span class="string">&quot;调制波叠加((α*i)+(β*ii))频谱&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>整体对比图</p>
+<center><img data-src="/myImage/全图.svg" width="450" alt="图片描述"></center>]]></content>
+      <categories>
+        <category>Math</category>
+      </categories>
+  </entry>
+  <entry>
     <title>FFT算法的前世今生</title>
     <url>//article/FFT.html</url>
     <content><![CDATA[<blockquote>
@@ -99,73 +166,6 @@ $$ -->
       </categories>
   </entry>
   <entry>
-    <title>数字下变频(DDC)、数字上变频(DUC)</title>
-    <url>//article/DDC_DUC.html</url>
-    <content><![CDATA[<blockquote>
-<p>概述了数字变频的数学原理与实际使用情况,使用Matlab仿真,先构造频域连续的宽带信号模拟基带数字信号,如果利用傅里叶反变换构造了时域信号用于仿真.文章给出了仿真代码与结果图.</p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在无线通信中，数据由核心网下传至基站，基站经过处理后变成电磁信号对外发送，最后到达用户端。在基站中，核心网下发的未被处理过的数字信号被称为基带信号。基带信号通常是零频宽&#x2F;窄带信号。基带信号的采样率较低，不能满足射频发射的要求，所以基带信号往往经过滤波和内插转换成高采样率，从而调制到中频载波频率上.<br>此时若基站接收到两路不同的基带信号，则无法做模拟上变频到同一频段，因为从频谱上看两个基带信号频谱叠加了，<a href="#%E9%A2%91%E8%B0%B1%E5%8F%A0%E5%8A%A0"><strong>相互干扰</strong></a>。若使用两个频段对外发送则过于浪费频谱资源了。在同一空间内，通信信道是有限的，因此需要在模拟上变频之前先做数字上变频，将两路基带信号调制到一起，成为在频谱上连续的基带信号后，做模拟上变频，调制到中高频后对外发送。这样就只会占用一条中频带，节约了无线资源。</p>
-<blockquote>
-<p>具体可以看这篇博客<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0hpV2FuZ1dlbkJpbmcvYXJ0aWNsZS9kZXRhaWxzLzExMjMwNjY3Mw==">[4G&amp;5G专题-9]：RRU 数字上变频DUC与数字下变频DDC<i class="fa fa-external-link-alt"></i></span>。</p>
-</blockquote>
-<h2 id="数字上变频-DUC-数学原理"><a href="#数字上变频-DUC-数学原理" class="headerlink" title="数字上变频(DUC)数学原理"></a>数字上变频(DUC)数学原理</h2><p>数字上变频本质是是将一个处于零频的宽带信号搬移至高于零频的频段。原理上就是信号的调制，数学原理可以参考：<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0hpV2FuZ1dlbkJpbmcvYXJ0aWNsZS9kZXRhaWxzLzExMDE2MjU0Ng==">通信系统中的调制解调<i class="fa fa-external-link-alt"></i></span>。</p>
-<p>从公式上看频谱搬移可以通过时域中的信号乘以一个<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zODkzOTgyNi9hcnRpY2xlL2RldGFpbHMvMTAyODkzNjU2">单音信号<i class="fa fa-external-link-alt"></i></span>实现，公式如下:<br>$$<br>y(t) &#x3D; x(t)*cos(\omega_1t)<br>$$</p>
-<p>其中$x(t)$为需要调制的信号，假设也为一个单音信号$sin(\omega_0t)$则:<br>$$<br>\begin{align}<br>y(t) &amp;&#x3D; sin(\omega_0t) * cos(\omega_1t) \nonumber\\<br>     &amp;&#x3D; \frac{sin(\omega_0+\omega_1)+cos(\omega_0-\omega_1)}{2} \nonumber<br>\end{align}<br>$$<br>由上可以得出频谱搬移后会出现镜像分别为$\omega_0+\omega_1$和$\omega_0-\omega_1$这两个频率上。但在基带处理中基带信号一般为<span class="exturl" data-url="aHR0cHM6Ly9yZi5lZWZvY3VzLmNvbS9hcnRpY2xlL2lkLTMzNTk5Ng==">IQ信号<i class="fa fa-external-link-alt"></i></span>，因此用于调制的信号也该是个复数信号。<br>所以有</p>
-<p>$$<br>y(t) &#x3D; x(t)*e^{j2\pi f_0 t}<br>$$</p>
-<p>其中</p>
-<ul>
-<li>$x(t)$是基带信号</li>
-<li>$e^{j2\pi f_0 t}$是复指数信号，可以看作载波信号。</li>
-<li>$f_0$是搬移的频率，决定了搬移的幅度和方向。</li>
-</ul>
-<p>复指数信号的时域表达式为：</p>
-<p>$$<br>    e^{j2\pi f_0 t} &#x3D; \cos(\omega_1t) + j \sin(\omega_1t)<br>$$</p>
-<p>因此从时域上看:<br>$$<br>    y(t) &#x3D; x(t) * [cos(\omega_1t)+jsin(\omega_1t)]<br>$$</p>
-<p>假设基带信号为<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zODkzOTgyNi9hcnRpY2xlL2RldGFpbHMvMTAyODkzNjU2">单音信号<i class="fa fa-external-link-alt"></i></span>,其时域上三角函数表达式为:</p>
-<p>$$<br>    x(t)&#x3D;cos(\omega_0t)+jsin(\omega_0t)<br>$$</p>
-<p>则时域的频谱搬移可以由下表示:<br>$$ \begin{align}<br>    y(t) &amp;&#x3D; [cos(\omega_0t)+jsin(\omega_0t)]*[cos(\omega_1t)+jsin(\omega_1t)] \nonumber\\<br>     &amp;&#x3D;[cos(\omega_0t)cos(\omega_1t)-sin(\omega_0t)sin(\omega_1t)]+j[cos(\omega_0t)sin(\omega_1t)+sin(\omega_0t)cos(\omega_1t)] \nonumber\\<br>     &amp;&#x3D;cos[(\omega_0+\omega_1)t]+jsin[(\omega_0+\omega_1)t] \nonumber<br>\end{align}<br>$$<br>由上面的计算可以看出原信号被搬移到了$\omega_0+\omega_1$上，若想得到位于$\omega_0-\omega_1$的信号则对IQ信号做差运算即可因为在FPGA中基带信号的实部和虚部是存在不同的变量中，可以单独拿出来做运算。复数在变换完成后可以只留下一个频率，这对我们基带处理带来了很大的便利。</p>
-<h2 id="Matlab模拟"><a href="#Matlab模拟" class="headerlink" title="Matlab模拟"></a>Matlab模拟</h2><h3 id="建立基带时域信号"><a href="#建立基带时域信号" class="headerlink" title="建立基带时域信号"></a>建立基带时域信号</h3><p>基带信号一般为零频的宽带或窄带信号，一开始的想法是利用不同频率的正弦波时域叠加构造宽带信号，但是傅里叶变换以后的叠加信号在频域上不连续。于是我反着来，先构建连续的频谱，然后用傅里叶反变换得到时域信号。</p>
-<p>首先创建一个长度为$N$的全0行向量,然后将带宽内的元素全部赋值为1.</p>
-<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">spectrum = <span class="built_in">zeros</span>(<span class="number">1</span>, N);</span><br><span class="line">spectrum(f &lt;= bandwidth) = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-<p>我们得到了一个在索引值小于bandwidth时值全为1的行向量，可以认定为信号频谱。于是可以构建两个这样的不同带宽的频谱如下图:</p>
-<center><img data-src="/myImage//宽带信号.svg" width="450" alt="图片描述"></center>
-
-<p>接着为了得到时域信号我们对其做傅里叶反变换，然后再做傅里叶变换得到时域信号的频谱(觉得麻烦这步可以省略):</p>
-<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">signal = ifft(spectrum);</span><br><span class="line">signal_fft  = fft(signal);</span><br></pre></td></tr></table></figure>
-<p>做傅里叶变换后，在高频会出现镜像，我们舍弃掉高频的部分的数据只讨论基带信号本身。<br>然后将代码简单假工一下做成函数方便一会调用。</p>
-<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">y</span> = <span class="title">broadband</span><span class="params">(varargin)</span></span></span><br><span class="line">    p = inputParser;            <span class="comment">% 函数的输入解析器</span></span><br><span class="line">    p.addParameter(<span class="string">&#x27;fs&#x27;</span>,<span class="number">1000</span>);  <span class="comment">% 设置变量名和默认参数</span></span><br><span class="line">    p.addParameter(<span class="string">&#x27;T&#x27;</span>,<span class="number">1</span>);      <span class="comment">% 设置变量名和默认参数</span></span><br><span class="line">    p.addParameter(<span class="string">&#x27;bandwidth&#x27;</span>,<span class="number">50</span>);      <span class="comment">% 设置变量名和默认参数</span></span><br><span class="line">    p.parse(varargin&#123;:&#125;);       <span class="comment">% 对输入变量进行解析，如果检测到前面的变量被赋值，则更新变量取值</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">% 生成频谱</span></span><br><span class="line">    N = p.Results.fs*p.Results.T; <span class="comment">% 信号长度</span></span><br><span class="line">    f = <span class="built_in">linspace</span>(<span class="number">0</span>, p.Results.fs, N); <span class="comment">% 频率范围</span></span><br><span class="line">    spectrum = <span class="built_in">zeros</span>(<span class="number">1</span>, N);</span><br><span class="line">    spectrum(f &lt;= p.Results.bandwidth) = <span class="number">1</span>; <span class="comment">% 在带宽内设置频谱幅度为1</span></span><br><span class="line">    <span class="comment">% 生成时域信号</span></span><br><span class="line">    signal = ifft(spectrum);</span><br><span class="line">    <span class="comment">%傅里叶变换</span></span><br><span class="line">    signal_fft  = fft(signal);</span><br><span class="line"></span><br><span class="line">    y.fft = signal_fft(<span class="number">1</span>:<span class="keyword">end</span>/<span class="number">2</span>);</span><br><span class="line">    y.f=f(<span class="number">1</span>:<span class="keyword">end</span>/<span class="number">2</span>);</span><br><span class="line">    y.<span class="built_in">real</span> = signal;</span><br><span class="line">    y.t=<span class="built_in">linspace</span>(<span class="number">0</span>, p.Results.T, N);</span><br><span class="line">    y.n=N;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="建立载波时域信号"><a href="#建立载波时域信号" class="headerlink" title="建立载波时域信号"></a>建立载波时域信号</h3><p>直接生成特定频率的正弦波即可，注意为了一会与基带信号进行运算，要保证生成的信号长度与基带信号相同。函数代码如下</p>
-<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">y</span> = <span class="title">wave_init</span><span class="params">(varargin)</span></span></span><br><span class="line">    p = inputParser;            <span class="comment">% 函数的输入解析器</span></span><br><span class="line">    p.addParameter(<span class="string">&#x27;fs&#x27;</span>,<span class="number">1000</span>);  <span class="comment">% 设置变量名和默认参数</span></span><br><span class="line">    p.addParameter(<span class="string">&#x27;L&#x27;</span>,<span class="number">1000</span>);      <span class="comment">% 设置变量名和默认参数</span></span><br><span class="line">    p.addParameter(<span class="string">&#x27;a1&#x27;</span>,<span class="number">0</span>);      <span class="comment">% 设置变量名和默认参数</span></span><br><span class="line">    p.addParameter(<span class="string">&#x27;f1&#x27;</span>,<span class="number">0</span>);      <span class="comment">% 设置变量名和默认参数</span></span><br><span class="line">    p.parse(varargin&#123;:&#125;);       <span class="comment">% 对输入变量进行解析，如果检测到前面的变量被赋值，则更新变量取值</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">% 定义参数</span></span><br><span class="line">    T = <span class="number">1</span>/p.Results.fs;               <span class="comment">% 采样间隔</span></span><br><span class="line">    t = (<span class="number">0</span>:p.Results.L<span class="number">-1</span>)*T;          <span class="comment">% 时间向量</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">% 生成正弦波信号</span></span><br><span class="line">    reslut = p.Results.a1*<span class="built_in">sin</span>(<span class="number">2</span>*<span class="built_in">pi</span>*p.Results.f1*t);</span><br><span class="line">    temp_fft=<span class="built_in">abs</span>(fft(reslut)); </span><br><span class="line">    f = <span class="built_in">linspace</span>(<span class="number">0</span>, p.Results.fs, p.Results.L); <span class="comment">% 频率范围</span></span><br><span class="line"></span><br><span class="line">    y.fft = temp_fft(<span class="number">1</span>:<span class="keyword">end</span>/<span class="number">2</span>);</span><br><span class="line">    y.f = f(<span class="number">1</span>:<span class="keyword">end</span>/<span class="number">2</span>);</span><br><span class="line">    y.<span class="built_in">real</span> = reslut;</span><br><span class="line">    y.t = t;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<p>值得注意，这里是直接使用正弦信号进行快速傅里叶变换，傅里叶变换会将信号从时域转换到频域，得到频谱。频谱是一个复数，包含幅度和相位信息。取绝对值操作后，我们得到了频谱的幅度，这表示了在不同频率下信号的能量分布情况，当然也可以直接对信号进行平方运算，我们就可以的得到信号在频域上的能量分布情况，对信号的功率谱密度进行分析。利用以上函数构造两个频率为100Hz和130Hz的载波信号。</p>
-<center><img data-src="/myImage//载波.svg" width="450" alt="图片描述"></center>
-
-<h3 id="频谱搬移"><a href="#频谱搬移" class="headerlink" title="频谱搬移"></a>频谱搬移</h3><p>根据前文的计算，想要实现频谱搬移需要将基带信号与载波信号相乘。</p>
-<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">% 宽带信号</span></span><br><span class="line">wave_0 = broadband(<span class="string">&#x27;fs&#x27;</span>,<span class="number">1000</span>,<span class="string">&#x27;T&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;bandwidth&#x27;</span>,<span class="number">30</span>);</span><br><span class="line">wave_1 = broadband(<span class="string">&#x27;fs&#x27;</span>,<span class="number">1000</span>,<span class="string">&#x27;T&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;bandwidth&#x27;</span>,<span class="number">50</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">%载波信号</span></span><br><span class="line">c_wave = wave_init(<span class="string">&#x27;a1&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;f1&#x27;</span>,<span class="number">100</span>);</span><br><span class="line">c_wave_1 = wave_init(<span class="string">&#x27;a1&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;f1&#x27;</span>,<span class="number">130</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% 搬移</span></span><br><span class="line">s_wave = c_wave.<span class="built_in">real</span>.*wave_0.<span class="built_in">real</span>;</span><br><span class="line">s_wave_fft = <span class="built_in">abs</span>(fft(s_wave));</span><br><span class="line"></span><br><span class="line">s_wave_1 = c_wave_1.<span class="built_in">real</span>.*wave_1.<span class="built_in">real</span>;</span><br><span class="line">s_wave_fft_1 = <span class="built_in">abs</span>(fft(s_wave_1));</span><br></pre></td></tr></table></figure>
-
-<p>这是搬移后的频谱</p>
-<center><img data-src="/myImage//调制波.svg" width="450" alt="图片描述"></center>
-
-<p>随后我们再将调制波时域上相加，即可得到一个宽带信号。</p>
-<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">wave = s_wave + s_wave_1;</span><br><span class="line">wave_fft = <span class="built_in">abs</span>(fft(wave));</span><br></pre></td></tr></table></figure>
-<p>如图:</p>
-<center><img data-src="/myImage//叠加.svg" width="450" alt="图片描述"></center>
-
-<p>若不进行搬移直接叠加会发生干扰，信号无法解调，如图:<a id="频谱叠加"></a></p>
-<center><img data-src="/myImage//简单叠加.svg" width="450" alt="图片描述"></center>
-
-<p>这是主函数调试代码：</p>
-<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="built_in">figure</span>(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% 宽带信号</span></span><br><span class="line">wave_0 = broadband(<span class="string">&#x27;fs&#x27;</span>,<span class="number">1000</span>,<span class="string">&#x27;T&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;bandwidth&#x27;</span>,<span class="number">30</span>);</span><br><span class="line">wave_1 = broadband(<span class="string">&#x27;fs&#x27;</span>,<span class="number">1000</span>,<span class="string">&#x27;T&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;bandwidth&#x27;</span>,<span class="number">50</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">%载波信号</span></span><br><span class="line">c_wave = wave_init(<span class="string">&#x27;a1&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;f1&#x27;</span>,<span class="number">100</span>);</span><br><span class="line">c_wave_1 = wave_init(<span class="string">&#x27;a1&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;f1&#x27;</span>,<span class="number">130</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% 搬移</span></span><br><span class="line">s_wave = c_wave.<span class="built_in">real</span>.*wave_0.<span class="built_in">real</span>;</span><br><span class="line">s_wave_fft = <span class="built_in">abs</span>(fft(s_wave));</span><br><span class="line"></span><br><span class="line">s_wave_1 = c_wave_1.<span class="built_in">real</span>.*wave_1.<span class="built_in">real</span>;</span><br><span class="line">s_wave_fft_1 = <span class="built_in">abs</span>(fft(s_wave_1));</span><br><span class="line"></span><br><span class="line">wave = s_wave + s_wave_1;</span><br><span class="line">wave_fft = <span class="built_in">abs</span>(fft(wave));</span><br><span class="line"></span><br><span class="line"><span class="comment">% s_wave_2 = wave_0.real + wave_1.real;</span></span><br><span class="line"><span class="comment">% s_wave_2_fft = abs(fft(s_wave_2));</span></span><br><span class="line"><span class="comment">% subplot(1,1,1);</span></span><br><span class="line"><span class="comment">% plot(wave_0.f, s_wave_2_fft(1:end/2));</span></span><br><span class="line"><span class="comment">% title(&quot;叠加频谱&quot;);</span></span><br><span class="line"></span><br><span class="line">subplot(<span class="number">7</span>,<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line"><span class="built_in">plot</span>(wave_0.f, wave_0.fft);</span><br><span class="line">title(<span class="string">&quot;信号α频谱&quot;</span>);</span><br><span class="line"></span><br><span class="line">subplot(<span class="number">7</span>,<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line"><span class="comment">% subplot(2,1,2);</span></span><br><span class="line"><span class="built_in">plot</span>(wave_1.f, wave_1.fft);</span><br><span class="line">title(<span class="string">&quot;信号β频谱&quot;</span>);</span><br><span class="line"></span><br><span class="line">subplot(<span class="number">7</span>,<span class="number">1</span>,<span class="number">3</span>);</span><br><span class="line"><span class="built_in">plot</span>(c_wave.f, c_wave.fft);</span><br><span class="line">title(<span class="string">&quot;载波频谱i&quot;</span>);</span><br><span class="line"></span><br><span class="line">subplot(<span class="number">7</span>,<span class="number">1</span>,<span class="number">4</span>);</span><br><span class="line"><span class="built_in">plot</span>(c_wave.f, c_wave_1.fft);</span><br><span class="line">title(<span class="string">&quot;载波频谱ii&quot;</span>);</span><br><span class="line"></span><br><span class="line">subplot(<span class="number">7</span>,<span class="number">1</span>,<span class="number">5</span>);</span><br><span class="line"><span class="built_in">plot</span>(c_wave.f, s_wave_fft(<span class="number">1</span>:<span class="keyword">end</span>/<span class="number">2</span>));</span><br><span class="line">title(<span class="string">&quot;调制波(α*i)频谱&quot;</span>);</span><br><span class="line"></span><br><span class="line">subplot(<span class="number">7</span>,<span class="number">1</span>,<span class="number">6</span>);</span><br><span class="line"><span class="built_in">plot</span>(c_wave.f, s_wave_fft_1(<span class="number">1</span>:<span class="keyword">end</span>/<span class="number">2</span>));</span><br><span class="line">title(<span class="string">&quot;调制波(β*ii)频谱&quot;</span>);</span><br><span class="line"></span><br><span class="line">subplot(<span class="number">7</span>,<span class="number">1</span>,<span class="number">7</span>);</span><br><span class="line"><span class="built_in">plot</span>(c_wave.f, wave_fft(<span class="number">1</span>:<span class="keyword">end</span>/<span class="number">2</span>));</span><br><span class="line">title(<span class="string">&quot;调制波叠加((α*i)+(β*ii))频谱&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-<p>整体对比图</p>
-<center><img data-src="/myImage/全图.svg" width="450" alt="图片描述"></center>]]></content>
-      <categories>
-        <category>Math</category>
-      </categories>
-  </entry>
-  <entry>
     <title>GT Wizard 多通道问题</title>
     <url>//article/GT_Wizard_MultiChannel_issue.html</url>
     <content><![CDATA[<blockquote>
@@ -189,6 +189,26 @@ $$ -->
       <categories>
         <category>FPGA</category>
       </categories>
+  </entry>
+  <entry>
+    <title>本站数学方程式渲染模板</title>
+    <url>//article/Mathematical.html</url>
+    <content><![CDATA[<blockquote>
+<p>本篇文章仅用作记录满足MathJax渲染条件的数学方程模板…</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="简单方程"><a href="#简单方程" class="headerlink" title="简单方程"></a>简单方程</h2><p>对于简单的方程式<br>$$\begin{equation} \label{eq1}<br>e&#x3D;mc^2<br>\end{equation}$$<br>请使用以下形式给出一个标签：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$$\begin&#123;equation&#125; \label&#123;eq1&#125;</span><br><span class="line">e=mc^2</span><br><span class="line">\end&#123;equation&#125;$$</span><br></pre></td></tr></table></figure>
+<p>然后，您可以使用以下内容轻松地在文本中引用此等式：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">The famous matter-energy equation $\eqref&#123;eq1&#125;$ proposed by Einstein...</span><br></pre></td></tr></table></figure>
+<p>The famous matter-energy equation $\eqref{eq1}$ proposed by Einstein…</p>
+<h2 id="从编号中排除方程式"><a href="#从编号中排除方程式" class="headerlink" title="从编号中排除方程式"></a>从编号中排除方程式</h2><p>在环境中，如果您不想对一个或某些方程进行编号，只需在这些方程后面使用即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$$\begin&#123;align&#125;</span><br><span class="line">-4 + 5x &amp;= 2 + y \nonumber \\</span><br><span class="line">w + 2 &amp;= -1 + w \\</span><br><span class="line">ab &amp;= cb</span><br><span class="line">\end&#123;align&#125;$$</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用指定标签标记方程"><a href="#使用指定标签标记方程" class="headerlink" title="使用指定标签标记方程"></a>使用指定标签标记方程</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$$x+1\over\sqrt&#123;1-x^2&#125; \tag&#123;i&#125;\label&#123;eq_tag&#125;$$</span><br></pre></td></tr></table></figure>
+<p>$$x+1\over\sqrt{1-x^2} \tag{i}\label{eq_tag}$$<br>Equation $\eqref{eq_tag}$ use <code>\tag&#123;&#125;</code> instead of automatic numbering.</p>
+]]></content>
   </entry>
   <entry>
     <title>FreeRTOS</title>
@@ -291,68 +311,6 @@ $$ -->
       </categories>
   </entry>
   <entry>
-    <title>本站数学方程式渲染模板</title>
-    <url>//article/Mathematical.html</url>
-    <content><![CDATA[<blockquote>
-<p>本篇文章仅用作记录满足MathJax渲染条件的数学方程模板…</p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="简单方程"><a href="#简单方程" class="headerlink" title="简单方程"></a>简单方程</h2><p>对于简单的方程式<br>$$\begin{equation} \label{eq1}<br>e&#x3D;mc^2<br>\end{equation}$$<br>请使用以下形式给出一个标签：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$$\begin&#123;equation&#125; \label&#123;eq1&#125;</span><br><span class="line">e=mc^2</span><br><span class="line">\end&#123;equation&#125;$$</span><br></pre></td></tr></table></figure>
-<p>然后，您可以使用以下内容轻松地在文本中引用此等式：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">The famous matter-energy equation $\eqref&#123;eq1&#125;$ proposed by Einstein...</span><br></pre></td></tr></table></figure>
-<p>The famous matter-energy equation $\eqref{eq1}$ proposed by Einstein…</p>
-<h2 id="从编号中排除方程式"><a href="#从编号中排除方程式" class="headerlink" title="从编号中排除方程式"></a>从编号中排除方程式</h2><p>在环境中，如果您不想对一个或某些方程进行编号，只需在这些方程后面使用即可。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$$\begin&#123;align&#125;</span><br><span class="line">-4 + 5x &amp;= 2 + y \nonumber \\</span><br><span class="line">w + 2 &amp;= -1 + w \\</span><br><span class="line">ab &amp;= cb</span><br><span class="line">\end&#123;align&#125;$$</span><br></pre></td></tr></table></figure>
-
-<h2 id="使用指定标签标记方程"><a href="#使用指定标签标记方程" class="headerlink" title="使用指定标签标记方程"></a>使用指定标签标记方程</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$$x+1\over\sqrt&#123;1-x^2&#125; \tag&#123;i&#125;\label&#123;eq_tag&#125;$$</span><br></pre></td></tr></table></figure>
-<p>$$x+1\over\sqrt{1-x^2} \tag{i}\label{eq_tag}$$<br>Equation $\eqref{eq_tag}$ use <code>\tag&#123;&#125;</code> instead of automatic numbering.</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>ViVado报错记录及解决方式</title>
-    <url>//article/Vivado_Log_Resolution.html</url>
-    <content><![CDATA[<blockquote>
-<p>记录日常开发过程中遇到的各种错误极其解决方式。文章主要分为三个部分，对应FPGA编译过程中的编译，综合，比特流生成。同时还将记录仿真过程中遇到的奇奇怪怪的问题。更新中…</p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="Generate-Bitstream-Failed"><a href="#Generate-Bitstream-Failed" class="headerlink" title="Generate Bitstream Failed"></a><center>Generate Bitstream Failed</center></h2><h3 id="DRC-NSTD-1"><a href="#DRC-NSTD-1" class="headerlink" title="[DRC NSTD-1]"></a>[DRC NSTD-1]</h3><ul>
-<li><p><strong>问题</strong><br>引脚定义了，没有使用或者没做物理约束导致生成bit文件报错，DRC电气检测失败。此处特指顶层文件输入输出引脚。</p>
-</li>
-<li><p><strong>解决</strong></p>
-<p>  1.找到未使用引脚并注释。</p>
-<p>  2.使用TCL文件忽略该项报错,TCL文件内容如下，手动创建该文件后，在Vivado右栏选择Setting-&gt;Project Settings-&gt;Implementation-&gt;Write Bitstream-&gt;tcl.pre选择该文件并导入后重新执行Generate Bitstream。</p>
-<figure class="highlight tcl"><table><tr><td class="code"><pre><span class="line">set_property SEVERITY &#123;Warning&#125; [get_drc_checks NSTD<span class="number">-1</span>]</span><br><span class="line">set_property SEVERITY &#123;Warning&#125; [get_drc_checks UCIO<span class="number">-1</span>]</span><br><span class="line">set_property SEVERITY &#123;Warning&#125; [get_drc_checks RTSTAT<span class="number">-1</span>]</span><br></pre></td></tr></table></figure></li>
-</ul>
-<hr>
-<h2 id="Run-Implementation-Failed"><a href="#Run-Implementation-Failed" class="headerlink" title="Run Implementation Failed"></a><center>Run Implementation Failed</center></h2><h3 id="DRC-UTLZ-1"><a href="#DRC-UTLZ-1" class="headerlink" title="[DRC UTLZ-1]"></a>[DRC UTLZ-1]</h3><blockquote>
-<p>Resource utilization: DSP48E1 over-utilized in Top Level Design (This design requires more DSP48E1 cells than are available in the target device. This design requires 1211 of such cell types but only 900 compatible sites are available in the target device. Please analyze your synthesis results and constraints to ensure the design is mapped to Xilinx primitives as expected. If so, please consider targeting a larger device.)</p>
-</blockquote>
-<ul>
-<li><p><strong>问题</strong><br>提示很明显指出,DSP资源不足.</p>
-</li>
-<li><p><strong>解决</strong><br>点击 Open Synthesized Design -&gt; Report Utilization 查看各个模块DSP使用情况,优化DSP使用.一般需要关注DDS,FIR,CFR等模块.</p>
-</li>
-</ul>
-<hr>
-<h2 id="Run-Synthesis-Failed"><a href="#Run-Synthesis-Failed" class="headerlink" title="Run Synthesis Failed"></a><center>Run Synthesis Failed</center></h2><h3 id="Synth-8-5535"><a href="#Synth-8-5535" class="headerlink" title="[Synth 8-5535]"></a>[Synth 8-5535]</h3><blockquote>
-<p>port <sys_clk> has illegal connections. It is illegal to have a port connected to an input buffer and other components. The following are the port connections : Input Buffer: Port I of instance clkin1_ibufg(IBUF) in module <clk_wiz_0_clk_wiz> Other Components: Port C of instance sys_rst_n_reg(FD) in module ddr3_rw_top</p>
-</blockquote>
-<ul>
-<li><p><strong>问题</strong><br>顶层时钟引脚未经过IBUF直接使用会导致此错误</p>
-</li>
-<li><p><strong>解决</strong><br>  使用<code>IBUF</code>和<code>BUFG</code>原语将时钟导入输入时钟缓冲和全局时钟缓冲后使用。<code>IBUFG</code>即输入全局缓冲，是与专用全局时钟输入管脚相连接的首级全局缓冲。所有从全局时钟管脚输入的信号必须经过IBUF元，否则在布局布线时会报错。 IBUFG支持AGP、CTT、GTL、GTLP、HSTL、LVCMOS、LVDCI、LVDS、LVPECL、LVTTL、PCI、PCIX和 SSTL等多种格式的IO标准。<code>BUFG</code><br>  是全局缓冲，它的输入是IBUFG的输出，BUFG的输出到达FPGA内部的IOB、CLB、选择性块RAM的时钟延迟和抖动最小。</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>FPGA</category>
-        <category>Vivado</category>
-      </categories>
-  </entry>
-  <entry>
     <title>关于version `GLIBC_2.34&#39; not found解决办法</title>
     <url>//article/solution_for_version_GLIBC_2_34_not_found.html</url>
     <content><![CDATA[<blockquote>
@@ -395,6 +353,48 @@ $$ -->
 ]]></content>
       <categories>
         <category>嵌入式</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>ViVado报错记录及解决方式</title>
+    <url>//article/Vivado_Log_Resolution.html</url>
+    <content><![CDATA[<blockquote>
+<p>记录日常开发过程中遇到的各种错误极其解决方式。文章主要分为三个部分，对应FPGA编译过程中的编译，综合，比特流生成。同时还将记录仿真过程中遇到的奇奇怪怪的问题。更新中…</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="Generate-Bitstream-Failed"><a href="#Generate-Bitstream-Failed" class="headerlink" title="Generate Bitstream Failed"></a><center>Generate Bitstream Failed</center></h2><h3 id="DRC-NSTD-1"><a href="#DRC-NSTD-1" class="headerlink" title="[DRC NSTD-1]"></a>[DRC NSTD-1]</h3><ul>
+<li><p><strong>问题</strong><br>引脚定义了，没有使用或者没做物理约束导致生成bit文件报错，DRC电气检测失败。此处特指顶层文件输入输出引脚。</p>
+</li>
+<li><p><strong>解决</strong></p>
+<p>  1.找到未使用引脚并注释。</p>
+<p>  2.使用TCL文件忽略该项报错,TCL文件内容如下，手动创建该文件后，在Vivado右栏选择Setting-&gt;Project Settings-&gt;Implementation-&gt;Write Bitstream-&gt;tcl.pre选择该文件并导入后重新执行Generate Bitstream。</p>
+<figure class="highlight tcl"><table><tr><td class="code"><pre><span class="line">set_property SEVERITY &#123;Warning&#125; [get_drc_checks NSTD<span class="number">-1</span>]</span><br><span class="line">set_property SEVERITY &#123;Warning&#125; [get_drc_checks UCIO<span class="number">-1</span>]</span><br><span class="line">set_property SEVERITY &#123;Warning&#125; [get_drc_checks RTSTAT<span class="number">-1</span>]</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h2 id="Run-Implementation-Failed"><a href="#Run-Implementation-Failed" class="headerlink" title="Run Implementation Failed"></a><center>Run Implementation Failed</center></h2><h3 id="DRC-UTLZ-1"><a href="#DRC-UTLZ-1" class="headerlink" title="[DRC UTLZ-1]"></a>[DRC UTLZ-1]</h3><blockquote>
+<p>Resource utilization: DSP48E1 over-utilized in Top Level Design (This design requires more DSP48E1 cells than are available in the target device. This design requires 1211 of such cell types but only 900 compatible sites are available in the target device. Please analyze your synthesis results and constraints to ensure the design is mapped to Xilinx primitives as expected. If so, please consider targeting a larger device.)</p>
+</blockquote>
+<ul>
+<li><p><strong>问题</strong><br>提示很明显指出,DSP资源不足.</p>
+</li>
+<li><p><strong>解决</strong><br>点击 Open Synthesized Design -&gt; Report Utilization 查看各个模块DSP使用情况,优化DSP使用.一般需要关注DDS,FIR,CFR等模块.</p>
+</li>
+</ul>
+<hr>
+<h2 id="Run-Synthesis-Failed"><a href="#Run-Synthesis-Failed" class="headerlink" title="Run Synthesis Failed"></a><center>Run Synthesis Failed</center></h2><h3 id="Synth-8-5535"><a href="#Synth-8-5535" class="headerlink" title="[Synth 8-5535]"></a>[Synth 8-5535]</h3><blockquote>
+<p>port <sys_clk> has illegal connections. It is illegal to have a port connected to an input buffer and other components. The following are the port connections : Input Buffer: Port I of instance clkin1_ibufg(IBUF) in module <clk_wiz_0_clk_wiz> Other Components: Port C of instance sys_rst_n_reg(FD) in module ddr3_rw_top</p>
+</blockquote>
+<ul>
+<li><p><strong>问题</strong><br>顶层时钟引脚未经过IBUF直接使用会导致此错误</p>
+</li>
+<li><p><strong>解决</strong><br>  使用<code>IBUF</code>和<code>BUFG</code>原语将时钟导入输入时钟缓冲和全局时钟缓冲后使用。<code>IBUFG</code>即输入全局缓冲，是与专用全局时钟输入管脚相连接的首级全局缓冲。所有从全局时钟管脚输入的信号必须经过IBUF元，否则在布局布线时会报错。 IBUFG支持AGP、CTT、GTL、GTLP、HSTL、LVCMOS、LVDCI、LVDS、LVPECL、LVTTL、PCI、PCIX和 SSTL等多种格式的IO标准。<code>BUFG</code><br>  是全局缓冲，它的输入是IBUFG的输出，BUFG的输出到达FPGA内部的IOB、CLB、选择性块RAM的时钟延迟和抖动最小。</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>FPGA</category>
+        <category>Vivado</category>
       </categories>
   </entry>
 </search>

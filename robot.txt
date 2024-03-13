@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+Allow: /about/
+Allow: /archives/
+Allow: /article/
+Allow: /categories/
+
+
+Disallow: /images/
+Disallow: /js/
+Disallow: /css/
+Disallow: /myImage/
+Disallow: /uploads/
+Disallow: /home/
+
+Sitemap: https://yuhengwei2001.github.io/sitemap.xml
