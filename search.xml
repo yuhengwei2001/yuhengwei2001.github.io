@@ -68,30 +68,10 @@
       </categories>
   </entry>
   <entry>
-    <title>本站数学方程式渲染模板</title>
-    <url>//article/Mathematical.html</url>
-    <content><![CDATA[<blockquote>
-<p>本篇文章仅用作记录满足MathJax渲染条件的数学方程模板…</p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="简单方程"><a href="#简单方程" class="headerlink" title="简单方程"></a>简单方程</h2><p>对于简单的方程式<br>$$\begin{equation} \label{eq1}<br>e&#x3D;mc^2<br>\end{equation}$$<br>请使用以下形式给出一个标签：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$$\begin&#123;equation&#125; \label&#123;eq1&#125;</span><br><span class="line">e=mc^2</span><br><span class="line">\end&#123;equation&#125;$$</span><br></pre></td></tr></table></figure>
-<p>然后，您可以使用以下内容轻松地在文本中引用此等式：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">The famous matter-energy equation $\eqref&#123;eq1&#125;$ proposed by Einstein...</span><br></pre></td></tr></table></figure>
-<p>The famous matter-energy equation $\eqref{eq1}$ proposed by Einstein…</p>
-<h2 id="从编号中排除方程式"><a href="#从编号中排除方程式" class="headerlink" title="从编号中排除方程式"></a>从编号中排除方程式</h2><p>在环境中，如果您不想对一个或某些方程进行编号，只需在这些方程后面使用即可。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$$\begin&#123;align&#125;</span><br><span class="line">-4 + 5x &amp;= 2 + y \nonumber \\</span><br><span class="line">w + 2 &amp;= -1 + w \\</span><br><span class="line">ab &amp;= cb</span><br><span class="line">\end&#123;align&#125;$$</span><br></pre></td></tr></table></figure>
-
-<h2 id="使用指定标签标记方程"><a href="#使用指定标签标记方程" class="headerlink" title="使用指定标签标记方程"></a>使用指定标签标记方程</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$$x+1\over\sqrt&#123;1-x^2&#125; \tag&#123;i&#125;\label&#123;eq_tag&#125;$$</span><br></pre></td></tr></table></figure>
-<p>$$x+1\over\sqrt{1-x^2} \tag{i}\label{eq_tag}$$<br>Equation $\eqref{eq_tag}$ use <code>\tag&#123;&#125;</code> instead of automatic numbering.</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>FFT算法的前世今生</title>
+    <title>傅里叶变换原理(简易)</title>
     <url>//article/FFT.html</url>
     <content><![CDATA[<blockquote>
-<p>由实际应用倒推算法原理，暴力拆解快速傅里叶变换(Fast Fourier Transform-FFT)的信号处理上的原理。尽量摒弃繁杂的数学定义了解，直观的描述快速傅里叶到底对信号做了什么处理？阅读本文章的可以是对傅里叶变换公式推导毫无了解的朋友，因为这篇文章不从推导入手，而直接傅里叶变换公式入手，告诉你如何通过一系列的操作得到信号的频域图。至于如何推导傅里叶变换公式等以后有空再写一篇吧！感兴趣的朋友可以先去网上搜索一番。</p>
+<p>由实际应用倒推算法原理，暴力拆解傅里叶变换(Fourier Transform)的信号处理上的原理。尽量摒弃繁杂的数学定义了解，直观的描述快速傅里叶到底对信号做了什么处理？阅读本文章的可以是对傅里叶变换公式推导毫无了解的朋友，因为这篇文章不从推导入手，而直接傅里叶变换公式入手，告诉你如何通过一系列的操作得到信号的频域图。至于如何推导傅里叶变换公式等以后有空再写一篇吧！感兴趣的朋友可以先去网上搜索一番。</p>
 </blockquote>
 <span id="more"></span>
 
@@ -166,19 +146,8 @@
 <h3 id="带通采样"><a href="#带通采样" class="headerlink" title="带通采样"></a>带通采样</h3><p>带通采样的原理可以理解为，利用采样函数对被采样函数做频谱搬移。注意，频谱搬移需要避免频率混叠，具体推导以及原理这篇<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NTMxNzkxOS9hcnRpY2xlL2RldGFpbHMvMTMxOTA2MzA1">博客<i class="fa fa-external-link-alt"></i></span>做了详细叙述。</p>
 <p>有点技术手段的可以参考<span class="exturl" data-url="aHR0cDovL3d3dy53cy5iaW5naGFtdG9uLmVkdS9mb3dsZXIvZm93bGVyJTIwcGVyc29uYWwlMjBwYWdlL0VFNTIxX2ZpbGVzL0lJLTIlMjBCUCUyMFNhbXBsaW5nXzIwMDcucGRm">这篇PDF<i class="fa fa-external-link-alt"></i></span></p>
 <h2 id="FFT诞生历史"><a href="#FFT诞生历史" class="headerlink" title="FFT诞生历史"></a>FFT诞生历史</h2><p>1963年8月美、英、苏三国在莫斯科谈判，达成协议签定了该条约，全称为《关于禁止在大气层、外层空间和水下进行核武器爆炸实验的条约》又称〈部分核禁止条约〉或三家条约。可以注意到，条约中不包括地下核武器爆炸实验，这是因为地下核实验难以被检测到，大地隔绝了大部分的辐射，声音。使得其难以想地上或水下核试验一样容易被探测到。要想探测地下核试验，主要靠分析地动信息。但如何将日常地址活动造成的地动与核试验造成的地动区分开来成为了当时科学家所难以解决的问题。在快速傅里叶算法还未发现之前，按照离散傅里叶定义使用计算机对地动信号做频谱分析，算力远远不足，分析出的数据严重过时。因此在这个背景下，快速傅里叶变换的算法出现了。</p>
-<h2 id="快速傅里叶变换-FFT"><a href="#快速傅里叶变换-FFT" class="headerlink" title="快速傅里叶变换(FFT)"></a>快速傅里叶变换(FFT)</h2><p>快速傅里叶算法本质上是对离散傅里叶变化的改进，严格的数学推断可以参考这篇<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC80MDc4ODU0OTY=">快速理解FFT算法（完整无废话）<i class="fa fa-external-link-alt"></i></span><br>这里对其做简单理解。</p>
-<p>假设对傅里叶变换的原理有所了解(不了解划上去了解一下)就可以知道，傅里叶变换的实质是通过计算被采样信号与各组复变信号的乘积的积分得出频率与相位信息。而离散傅里叶变换是计算采<br>样点与离散的复变信各点的乘积的连加。</p>
-<hr>
-<p>卡壳了，等待更新哦…</p>
-<!-- $$
-\left[\begin {array}{c}
-1 &2 &3 \\
-1 &2 &3 \\
-1 &2 &3 \\
-\end{array}\right]
-$$ -->
-
-<h2 id="MATLAB-仿真代码"><a href="#MATLAB-仿真代码" class="headerlink" title="MATLAB 仿真代码"></a>MATLAB 仿真代码</h2><h3 id="DFT"><a href="#DFT" class="headerlink" title="DFT"></a>DFT</h3><figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">% 设置时间范围</span></span><br><span class="line">t = <span class="number">0</span>:<span class="number">0.01</span>:<span class="number">2</span>*<span class="built_in">pi</span>;</span><br><span class="line">freq1 = <span class="number">5</span>;</span><br><span class="line">freq2 = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">% 创建GIF文件</span></span><br><span class="line">filename = <span class="string">&#x27;sin_wave_animation.gif&#x27;</span>;</span><br><span class="line">fps = <span class="number">120</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">% 初始化乘积结果的和</span></span><br><span class="line">sum_of_product = <span class="built_in">zeros</span>(<span class="number">1</span>, <span class="built_in">length</span>(t));</span><br><span class="line">sum_of_product_sin = <span class="built_in">zeros</span>(<span class="number">1</span>, <span class="built_in">length</span>(t));</span><br><span class="line">sum_of_product_cos = <span class="built_in">zeros</span>(<span class="number">1</span>, <span class="built_in">length</span>(t));</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span> = <span class="number">1</span>:<span class="built_in">length</span>(t)</span><br><span class="line">    <span class="comment">% 生成两个不同频率的正弦波</span></span><br><span class="line">    y1 = <span class="built_in">cos</span>(freq1 * t);</span><br><span class="line">    y2 = <span class="built_in">sin</span>((freq2+<span class="built_in">i</span>/<span class="number">10</span>) * t);</span><br><span class="line">    y3 = <span class="built_in">cos</span>((freq2+<span class="built_in">i</span>/<span class="number">10</span>) * t);</span><br><span class="line">    <span class="comment">% 计算两个正弦波的乘积</span></span><br><span class="line"></span><br><span class="line">    y_product_sin = y1 .* y2;</span><br><span class="line">    y_product_cos = y1 .* y3;</span><br><span class="line">    <span class="comment">% 计算乘积结果的和</span></span><br><span class="line">    sum_of_product_sin(<span class="built_in">i</span>+<span class="number">1</span>) = sum(y_product_sin);</span><br><span class="line">    sum_of_product_cos(<span class="built_in">i</span>+<span class="number">1</span>) = sum(y_product_cos);</span><br><span class="line">    </span><br><span class="line">    sum_of_product = <span class="built_in">sqrt</span>(power(sum_of_product_sin, <span class="number">2</span>) + power(sum_of_product_cos, <span class="number">2</span>));</span><br><span class="line"></span><br><span class="line">    arr = <span class="number">0</span>:<span class="number">0.1</span>:<span class="number">10</span>;</span><br><span class="line">    subplot(<span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">    <span class="built_in">plot</span>(arr(<span class="number">1</span>:<span class="built_in">i</span>), sum_of_product_sin(<span class="number">1</span>:<span class="built_in">i</span>), <span class="string">&#x27;g&#x27;</span>); <span class="comment">% 只绘制当前时间点之前的数据</span></span><br><span class="line">    xlabel(<span class="string">&#x27;x&#x27;</span>);</span><br><span class="line">    ylabel(<span class="string">&#x27;y&#x27;</span>);</span><br><span class="line">    xlim([<span class="number">0</span>, <span class="number">10</span>]);</span><br><span class="line">    ylim([<span class="number">-500</span>, <span class="number">500</span>]);</span><br><span class="line">    title(<span class="string">&#x27;Re&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    arr = <span class="number">0</span>:<span class="number">0.1</span>:<span class="number">10</span>;</span><br><span class="line">    subplot(<span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">    <span class="built_in">plot</span>(arr(<span class="number">1</span>:<span class="built_in">i</span>), sum_of_product_cos(<span class="number">1</span>:<span class="built_in">i</span>), <span class="string">&#x27;g&#x27;</span>); <span class="comment">% 只绘制当前时间点之前的数据</span></span><br><span class="line">    xlabel(<span class="string">&#x27;x&#x27;</span>);</span><br><span class="line">    ylabel(<span class="string">&#x27;y&#x27;</span>);</span><br><span class="line">    xlim([<span class="number">0</span>, <span class="number">10</span>]);</span><br><span class="line">    ylim([<span class="number">-500</span>, <span class="number">500</span>]);</span><br><span class="line">    title(<span class="string">&#x27;Im&#x27;</span>);</span><br><span class="line">    </span><br><span class="line">    arr = <span class="number">0</span>:<span class="number">0.1</span>:<span class="number">10</span>;</span><br><span class="line">    subplot(<span class="number">3</span>, <span class="number">1</span>, <span class="number">3</span>);</span><br><span class="line">    <span class="built_in">plot</span>(arr(<span class="number">1</span>:<span class="built_in">i</span>), sum_of_product(<span class="number">1</span>:<span class="built_in">i</span>), <span class="string">&#x27;g&#x27;</span>); <span class="comment">% 只绘制当前时间点之前的数据</span></span><br><span class="line">    xlabel(<span class="string">&#x27;x&#x27;</span>);</span><br><span class="line">    ylabel(<span class="string">&#x27;y&#x27;</span>);</span><br><span class="line">    xlim([<span class="number">0</span>, <span class="number">10</span>]);</span><br><span class="line">    ylim([<span class="number">-500</span>, <span class="number">500</span>]);</span><br><span class="line">    title(<span class="string">&#x27;sqrt(power(Re, 2) + power(Im, 2));&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">% 保存当前图像为GIF</span></span><br><span class="line">    frame = getframe(gcf);</span><br><span class="line">    im = frame2im(frame);</span><br><span class="line">    [imind, cm] = rgb2ind(im, <span class="number">256</span>);</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">i</span> == <span class="number">1</span></span><br><span class="line">        imwrite(imind, cm, filename, <span class="string">&#x27;gif&#x27;</span>, <span class="string">&#x27;Loopcount&#x27;</span>, <span class="built_in">inf</span>, <span class="string">&#x27;DelayTime&#x27;</span>, <span class="number">1</span>/fps);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        imwrite(imind, cm, filename, <span class="string">&#x27;gif&#x27;</span>, <span class="string">&#x27;WriteMode&#x27;</span>, <span class="string">&#x27;append&#x27;</span>, <span class="string">&#x27;DelayTime&#x27;</span>, <span class="number">1</span>/fps);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">i</span> == <span class="number">100</span></span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="快速傅里叶变换-FFT"><a href="#快速傅里叶变换-FFT" class="headerlink" title="快速傅里叶变换(FFT)"></a>快速傅里叶变换(FFT)</h2><p>快速傅里叶算法本质上是对离散傅里叶变化的改进，本质上是利用矩阵乘法时不同基信号在奇数或偶数点的与被采样信号的乘积相同来减少计算，严格的数学推断可以参考这篇<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC80MDc4ODU0OTY=">快速理解FFT算法（完整无废话）<i class="fa fa-external-link-alt"></i></span></p>
+<h2 id="MATLAB-仿真代码"><a href="#MATLAB-仿真代码" class="headerlink" title="MATLAB 仿真代码"></a>MATLAB 仿真代码</h2><figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line"><span class="comment">% 设置时间范围</span></span><br><span class="line">t = <span class="number">0</span>:<span class="number">0.01</span>:<span class="number">2</span>*<span class="built_in">pi</span>;</span><br><span class="line">freq1 = <span class="number">5</span>;</span><br><span class="line">freq2 = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">% 创建GIF文件</span></span><br><span class="line">filename = <span class="string">&#x27;sin_wave_animation.gif&#x27;</span>;</span><br><span class="line">fps = <span class="number">120</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">% 初始化乘积结果的和</span></span><br><span class="line">sum_of_product = <span class="built_in">zeros</span>(<span class="number">1</span>, <span class="built_in">length</span>(t));</span><br><span class="line">sum_of_product_sin = <span class="built_in">zeros</span>(<span class="number">1</span>, <span class="built_in">length</span>(t));</span><br><span class="line">sum_of_product_cos = <span class="built_in">zeros</span>(<span class="number">1</span>, <span class="built_in">length</span>(t));</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span> = <span class="number">1</span>:<span class="built_in">length</span>(t)</span><br><span class="line">    <span class="comment">% 生成两个不同频率的正弦波</span></span><br><span class="line">    y1 = <span class="built_in">cos</span>(freq1 * t);</span><br><span class="line">    y2 = <span class="built_in">sin</span>((freq2+<span class="built_in">i</span>/<span class="number">10</span>) * t);</span><br><span class="line">    y3 = <span class="built_in">cos</span>((freq2+<span class="built_in">i</span>/<span class="number">10</span>) * t);</span><br><span class="line">    <span class="comment">% 计算两个正弦波的乘积</span></span><br><span class="line"></span><br><span class="line">    y_product_sin = y1 .* y2;</span><br><span class="line">    y_product_cos = y1 .* y3;</span><br><span class="line">    <span class="comment">% 计算乘积结果的和</span></span><br><span class="line">    sum_of_product_sin(<span class="built_in">i</span>+<span class="number">1</span>) = sum(y_product_sin);</span><br><span class="line">    sum_of_product_cos(<span class="built_in">i</span>+<span class="number">1</span>) = sum(y_product_cos);</span><br><span class="line">    </span><br><span class="line">    sum_of_product = <span class="built_in">sqrt</span>(power(sum_of_product_sin, <span class="number">2</span>) + power(sum_of_product_cos, <span class="number">2</span>));</span><br><span class="line"></span><br><span class="line">    arr = <span class="number">0</span>:<span class="number">0.1</span>:<span class="number">10</span>;</span><br><span class="line">    subplot(<span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">    <span class="built_in">plot</span>(arr(<span class="number">1</span>:<span class="built_in">i</span>), sum_of_product_sin(<span class="number">1</span>:<span class="built_in">i</span>), <span class="string">&#x27;g&#x27;</span>); <span class="comment">% 只绘制当前时间点之前的数据</span></span><br><span class="line">    xlabel(<span class="string">&#x27;x&#x27;</span>);</span><br><span class="line">    ylabel(<span class="string">&#x27;y&#x27;</span>);</span><br><span class="line">    xlim([<span class="number">0</span>, <span class="number">10</span>]);</span><br><span class="line">    ylim([<span class="number">-500</span>, <span class="number">500</span>]);</span><br><span class="line">    title(<span class="string">&#x27;Re&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    arr = <span class="number">0</span>:<span class="number">0.1</span>:<span class="number">10</span>;</span><br><span class="line">    subplot(<span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">    <span class="built_in">plot</span>(arr(<span class="number">1</span>:<span class="built_in">i</span>), sum_of_product_cos(<span class="number">1</span>:<span class="built_in">i</span>), <span class="string">&#x27;g&#x27;</span>); <span class="comment">% 只绘制当前时间点之前的数据</span></span><br><span class="line">    xlabel(<span class="string">&#x27;x&#x27;</span>);</span><br><span class="line">    ylabel(<span class="string">&#x27;y&#x27;</span>);</span><br><span class="line">    xlim([<span class="number">0</span>, <span class="number">10</span>]);</span><br><span class="line">    ylim([<span class="number">-500</span>, <span class="number">500</span>]);</span><br><span class="line">    title(<span class="string">&#x27;Im&#x27;</span>);</span><br><span class="line">    </span><br><span class="line">    arr = <span class="number">0</span>:<span class="number">0.1</span>:<span class="number">10</span>;</span><br><span class="line">    subplot(<span class="number">3</span>, <span class="number">1</span>, <span class="number">3</span>);</span><br><span class="line">    <span class="built_in">plot</span>(arr(<span class="number">1</span>:<span class="built_in">i</span>), sum_of_product(<span class="number">1</span>:<span class="built_in">i</span>), <span class="string">&#x27;g&#x27;</span>); <span class="comment">% 只绘制当前时间点之前的数据</span></span><br><span class="line">    xlabel(<span class="string">&#x27;x&#x27;</span>);</span><br><span class="line">    ylabel(<span class="string">&#x27;y&#x27;</span>);</span><br><span class="line">    xlim([<span class="number">0</span>, <span class="number">10</span>]);</span><br><span class="line">    ylim([<span class="number">-500</span>, <span class="number">500</span>]);</span><br><span class="line">    title(<span class="string">&#x27;sqrt(power(Re, 2) + power(Im, 2));&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">% 保存当前图像为GIF</span></span><br><span class="line">    frame = getframe(gcf);</span><br><span class="line">    im = frame2im(frame);</span><br><span class="line">    [imind, cm] = rgb2ind(im, <span class="number">256</span>);</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">i</span> == <span class="number">1</span></span><br><span class="line">        imwrite(imind, cm, filename, <span class="string">&#x27;gif&#x27;</span>, <span class="string">&#x27;Loopcount&#x27;</span>, <span class="built_in">inf</span>, <span class="string">&#x27;DelayTime&#x27;</span>, <span class="number">1</span>/fps);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        imwrite(imind, cm, filename, <span class="string">&#x27;gif&#x27;</span>, <span class="string">&#x27;WriteMode&#x27;</span>, <span class="string">&#x27;append&#x27;</span>, <span class="string">&#x27;DelayTime&#x27;</span>, <span class="number">1</span>/fps);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">i</span> == <span class="number">100</span></span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 ]]></content>
       <categories>
@@ -208,6 +177,68 @@ $$ -->
 ]]></content>
       <categories>
         <category>FPGA</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>本站数学方程式渲染模板</title>
+    <url>//article/Mathematical.html</url>
+    <content><![CDATA[<blockquote>
+<p>本篇文章仅用作记录满足MathJax渲染条件的数学方程模板…</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="简单方程"><a href="#简单方程" class="headerlink" title="简单方程"></a>简单方程</h2><p>对于简单的方程式<br>$$\begin{equation} \label{eq1}<br>e&#x3D;mc^2<br>\end{equation}$$<br>请使用以下形式给出一个标签：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$$\begin&#123;equation&#125; \label&#123;eq1&#125;</span><br><span class="line">e=mc^2</span><br><span class="line">\end&#123;equation&#125;$$</span><br></pre></td></tr></table></figure>
+<p>然后，您可以使用以下内容轻松地在文本中引用此等式：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">The famous matter-energy equation $\eqref&#123;eq1&#125;$ proposed by Einstein...</span><br></pre></td></tr></table></figure>
+<p>The famous matter-energy equation $\eqref{eq1}$ proposed by Einstein…</p>
+<h2 id="从编号中排除方程式"><a href="#从编号中排除方程式" class="headerlink" title="从编号中排除方程式"></a>从编号中排除方程式</h2><p>在环境中，如果您不想对一个或某些方程进行编号，只需在这些方程后面使用即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$$\begin&#123;align&#125;</span><br><span class="line">-4 + 5x &amp;= 2 + y \nonumber \\</span><br><span class="line">w + 2 &amp;= -1 + w \\</span><br><span class="line">ab &amp;= cb</span><br><span class="line">\end&#123;align&#125;$$</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用指定标签标记方程"><a href="#使用指定标签标记方程" class="headerlink" title="使用指定标签标记方程"></a>使用指定标签标记方程</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$$x+1\over\sqrt&#123;1-x^2&#125; \tag&#123;i&#125;\label&#123;eq_tag&#125;$$</span><br></pre></td></tr></table></figure>
+<p>$$x+1\over\sqrt{1-x^2} \tag{i}\label{eq_tag}$$<br>Equation $\eqref{eq_tag}$ use <code>\tag&#123;&#125;</code> instead of automatic numbering.</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>ViVado报错记录及解决方式</title>
+    <url>//article/Vivado_Log_Resolution.html</url>
+    <content><![CDATA[<blockquote>
+<p>记录日常开发过程中遇到的各种错误极其解决方式。文章主要分为三个部分，对应FPGA编译过程中的编译，综合，比特流生成。同时还将记录仿真过程中遇到的奇奇怪怪的问题。更新中…</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="Generate-Bitstream-Failed"><a href="#Generate-Bitstream-Failed" class="headerlink" title="Generate Bitstream Failed"></a><center>Generate Bitstream Failed</center></h2><h3 id="DRC-NSTD-1"><a href="#DRC-NSTD-1" class="headerlink" title="[DRC NSTD-1]"></a>[DRC NSTD-1]</h3><ul>
+<li><p><strong>问题</strong><br>引脚定义了，没有使用或者没做物理约束导致生成bit文件报错，DRC电气检测失败。此处特指顶层文件输入输出引脚。</p>
+</li>
+<li><p><strong>解决</strong></p>
+<p>  1.找到未使用引脚并注释。</p>
+<p>  2.使用TCL文件忽略该项报错,TCL文件内容如下，手动创建该文件后，在Vivado右栏选择Setting-&gt;Project Settings-&gt;Implementation-&gt;Write Bitstream-&gt;tcl.pre选择该文件并导入后重新执行Generate Bitstream。</p>
+<figure class="highlight tcl"><table><tr><td class="code"><pre><span class="line">set_property SEVERITY &#123;Warning&#125; [get_drc_checks NSTD<span class="number">-1</span>]</span><br><span class="line">set_property SEVERITY &#123;Warning&#125; [get_drc_checks UCIO<span class="number">-1</span>]</span><br><span class="line">set_property SEVERITY &#123;Warning&#125; [get_drc_checks RTSTAT<span class="number">-1</span>]</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h2 id="Run-Implementation-Failed"><a href="#Run-Implementation-Failed" class="headerlink" title="Run Implementation Failed"></a><center>Run Implementation Failed</center></h2><h3 id="DRC-UTLZ-1"><a href="#DRC-UTLZ-1" class="headerlink" title="[DRC UTLZ-1]"></a>[DRC UTLZ-1]</h3><blockquote>
+<p>Resource utilization: DSP48E1 over-utilized in Top Level Design (This design requires more DSP48E1 cells than are available in the target device. This design requires 1211 of such cell types but only 900 compatible sites are available in the target device. Please analyze your synthesis results and constraints to ensure the design is mapped to Xilinx primitives as expected. If so, please consider targeting a larger device.)</p>
+</blockquote>
+<ul>
+<li><p><strong>问题</strong><br>提示很明显指出,DSP资源不足.</p>
+</li>
+<li><p><strong>解决</strong><br>点击 Open Synthesized Design -&gt; Report Utilization 查看各个模块DSP使用情况,优化DSP使用.一般需要关注DDS,FIR,CFR等模块.</p>
+</li>
+</ul>
+<hr>
+<h2 id="Run-Synthesis-Failed"><a href="#Run-Synthesis-Failed" class="headerlink" title="Run Synthesis Failed"></a><center>Run Synthesis Failed</center></h2><h3 id="Synth-8-5535"><a href="#Synth-8-5535" class="headerlink" title="[Synth 8-5535]"></a>[Synth 8-5535]</h3><blockquote>
+<p>port <sys_clk> has illegal connections. It is illegal to have a port connected to an input buffer and other components. The following are the port connections : Input Buffer: Port I of instance clkin1_ibufg(IBUF) in module <clk_wiz_0_clk_wiz> Other Components: Port C of instance sys_rst_n_reg(FD) in module ddr3_rw_top</p>
+</blockquote>
+<ul>
+<li><p><strong>问题</strong><br>顶层时钟引脚未经过IBUF直接使用会导致此错误</p>
+</li>
+<li><p><strong>解决</strong><br>  使用<code>IBUF</code>和<code>BUFG</code>原语将时钟导入输入时钟缓冲和全局时钟缓冲后使用。<code>IBUFG</code>即输入全局缓冲，是与专用全局时钟输入管脚相连接的首级全局缓冲。所有从全局时钟管脚输入的信号必须经过IBUF元，否则在布局布线时会报错。 IBUFG支持AGP、CTT、GTL、GTLP、HSTL、LVCMOS、LVDCI、LVDS、LVPECL、LVTTL、PCI、PCIX和 SSTL等多种格式的IO标准。<code>BUFG</code><br>  是全局缓冲，它的输入是IBUFG的输出，BUFG的输出到达FPGA内部的IOB、CLB、选择性块RAM的时钟延迟和抖动最小。</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>FPGA</category>
+        <category>Vivado</category>
       </categories>
   </entry>
   <entry>
@@ -308,48 +339,6 @@ $$ -->
 ]]></content>
       <categories>
         <category>嵌入式</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>ViVado报错记录及解决方式</title>
-    <url>//article/Vivado_Log_Resolution.html</url>
-    <content><![CDATA[<blockquote>
-<p>记录日常开发过程中遇到的各种错误极其解决方式。文章主要分为三个部分，对应FPGA编译过程中的编译，综合，比特流生成。同时还将记录仿真过程中遇到的奇奇怪怪的问题。更新中…</p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="Generate-Bitstream-Failed"><a href="#Generate-Bitstream-Failed" class="headerlink" title="Generate Bitstream Failed"></a><center>Generate Bitstream Failed</center></h2><h3 id="DRC-NSTD-1"><a href="#DRC-NSTD-1" class="headerlink" title="[DRC NSTD-1]"></a>[DRC NSTD-1]</h3><ul>
-<li><p><strong>问题</strong><br>引脚定义了，没有使用或者没做物理约束导致生成bit文件报错，DRC电气检测失败。此处特指顶层文件输入输出引脚。</p>
-</li>
-<li><p><strong>解决</strong></p>
-<p>  1.找到未使用引脚并注释。</p>
-<p>  2.使用TCL文件忽略该项报错,TCL文件内容如下，手动创建该文件后，在Vivado右栏选择Setting-&gt;Project Settings-&gt;Implementation-&gt;Write Bitstream-&gt;tcl.pre选择该文件并导入后重新执行Generate Bitstream。</p>
-<figure class="highlight tcl"><table><tr><td class="code"><pre><span class="line">set_property SEVERITY &#123;Warning&#125; [get_drc_checks NSTD<span class="number">-1</span>]</span><br><span class="line">set_property SEVERITY &#123;Warning&#125; [get_drc_checks UCIO<span class="number">-1</span>]</span><br><span class="line">set_property SEVERITY &#123;Warning&#125; [get_drc_checks RTSTAT<span class="number">-1</span>]</span><br></pre></td></tr></table></figure></li>
-</ul>
-<hr>
-<h2 id="Run-Implementation-Failed"><a href="#Run-Implementation-Failed" class="headerlink" title="Run Implementation Failed"></a><center>Run Implementation Failed</center></h2><h3 id="DRC-UTLZ-1"><a href="#DRC-UTLZ-1" class="headerlink" title="[DRC UTLZ-1]"></a>[DRC UTLZ-1]</h3><blockquote>
-<p>Resource utilization: DSP48E1 over-utilized in Top Level Design (This design requires more DSP48E1 cells than are available in the target device. This design requires 1211 of such cell types but only 900 compatible sites are available in the target device. Please analyze your synthesis results and constraints to ensure the design is mapped to Xilinx primitives as expected. If so, please consider targeting a larger device.)</p>
-</blockquote>
-<ul>
-<li><p><strong>问题</strong><br>提示很明显指出,DSP资源不足.</p>
-</li>
-<li><p><strong>解决</strong><br>点击 Open Synthesized Design -&gt; Report Utilization 查看各个模块DSP使用情况,优化DSP使用.一般需要关注DDS,FIR,CFR等模块.</p>
-</li>
-</ul>
-<hr>
-<h2 id="Run-Synthesis-Failed"><a href="#Run-Synthesis-Failed" class="headerlink" title="Run Synthesis Failed"></a><center>Run Synthesis Failed</center></h2><h3 id="Synth-8-5535"><a href="#Synth-8-5535" class="headerlink" title="[Synth 8-5535]"></a>[Synth 8-5535]</h3><blockquote>
-<p>port <sys_clk> has illegal connections. It is illegal to have a port connected to an input buffer and other components. The following are the port connections : Input Buffer: Port I of instance clkin1_ibufg(IBUF) in module <clk_wiz_0_clk_wiz> Other Components: Port C of instance sys_rst_n_reg(FD) in module ddr3_rw_top</p>
-</blockquote>
-<ul>
-<li><p><strong>问题</strong><br>顶层时钟引脚未经过IBUF直接使用会导致此错误</p>
-</li>
-<li><p><strong>解决</strong><br>  使用<code>IBUF</code>和<code>BUFG</code>原语将时钟导入输入时钟缓冲和全局时钟缓冲后使用。<code>IBUFG</code>即输入全局缓冲，是与专用全局时钟输入管脚相连接的首级全局缓冲。所有从全局时钟管脚输入的信号必须经过IBUF元，否则在布局布线时会报错。 IBUFG支持AGP、CTT、GTL、GTLP、HSTL、LVCMOS、LVDCI、LVDS、LVPECL、LVTTL、PCI、PCIX和 SSTL等多种格式的IO标准。<code>BUFG</code><br>  是全局缓冲，它的输入是IBUFG的输出，BUFG的输出到达FPGA内部的IOB、CLB、选择性块RAM的时钟延迟和抖动最小。</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>FPGA</category>
-        <category>Vivado</category>
       </categories>
   </entry>
   <entry>
