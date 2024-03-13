@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>GT Wizard 多通道问题</title>
+    <url>//article/GT_Wizard_MultiChannel_issue.html</url>
+    <content><![CDATA[<blockquote>
+<p>在使用Xilinx提供的GT Wizard IP核时例化了多个两个收发通道，前期测试时只接了通道0，测试正常。但后期接入通道1时出现问题。当我断开通道0，只连接通道1时，数据接收错乱了。多方查询后发现是使用Vivado生成的仿真例程有问题，修改例程文件中的时钟连接逻辑即可解决例化多通道时只使用单通道有可能出现数据时钟错乱的问题。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><ul>
+<li>Vivado 2021.2.1</li>
+<li>VScode Portable</li>
+</ul>
+<h2 id="分析解决"><a href="#分析解决" class="headerlink" title="分析解决"></a>分析解决</h2><h3 id="问题定位"><a href="#问题定位" class="headerlink" title="问题定位"></a>问题定位</h3><p>右键IP核生成IP仿真例程后，可以在工程列表中找到类似<code>gtwizard_0_GT_USRCLK_SOURCE。v</code>的文件，这是用于配置GTX时钟资源的文件，其中在末尾的发送与接收时钟输出的语句可以看到问题所在，<strong>例程在仿真时输出的时钟全部采用通道0的时钟，因此在综合后上板子调试后，若通道0空载，则输出的恢复时钟混乱造成数据处理时序混乱</strong>。代码如下:</p>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line">    <span class="comment">// Instantiate a MMCM module to divide the reference clock. Uses internal feedback</span></span><br><span class="line">    <span class="comment">// for improved jitter performance， and to avoid consuming an additional BUFG</span></span><br><span class="line"></span><br><span class="line">    BUFG txoutclk_bufg0_i</span><br><span class="line">    (</span><br><span class="line">        <span class="variable">.I</span>                              (gt0_txoutclk_i)，</span><br><span class="line">        <span class="variable">.O</span>                              (gt0_txusrclk_i)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    BUFG rxoutclk_bufg1_i</span><br><span class="line">    (</span><br><span class="line">        <span class="variable">.I</span>                              (gt0_rxoutclk_i)，</span><br><span class="line">        <span class="variable">.O</span>                              (gt0_rxusrclk_i)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> GT0_TXUSRCLK_OUT = gt0_txusrclk_i;</span><br><span class="line"><span class="keyword">assign</span> GT0_TXUSRCLK2_OUT = gt0_txusrclk_i;</span><br><span class="line"><span class="keyword">assign</span> GT0_RXUSRCLK_OUT = gt0_rxusrclk_i;</span><br><span class="line"><span class="keyword">assign</span> GT0_RXUSRCLK2_OUT = gt0_rxusrclk_i;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">assign</span> GT1_TXUSRCLK_OUT = gt0_txusrclk_i;</span><br><span class="line"><span class="keyword">assign</span> GT1_TXUSRCLK2_OUT = gt0_txusrclk_i;</span><br><span class="line"><span class="keyword">assign</span> GT1_RXUSRCLK_OUT = gt0_rxusrclk_i;</span><br><span class="line"><span class="keyword">assign</span> GT1_RXUSRCLK2_OUT = gt0_rxusrclk_i;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="问题定位-1"><a href="#问题定位-1" class="headerlink" title="问题定位"></a>问题定位</h3><p>因此，需要将通道1的时钟源修改回其原本的内部恢复&#x2F;发送时钟。需要增加一些两个BUFG的资源，代码如下:</p>
+<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line">    <span class="comment">// Instantiate a MMCM module to divide the reference clock. Uses internal feedback</span></span><br><span class="line">    <span class="comment">// for improved jitter performance， and to avoid consuming an additional BUFG</span></span><br><span class="line"></span><br><span class="line">    BUFG txoutclk_bufg0_i0</span><br><span class="line">    (</span><br><span class="line">        <span class="variable">.I</span>                              (gt0_txoutclk_i)，</span><br><span class="line">        <span class="variable">.O</span>                              (gt0_txusrclk_i)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    BUFG rxoutclk_bufg1_i0</span><br><span class="line">    (</span><br><span class="line">        <span class="variable">.I</span>                              (gt0_rxoutclk_i)，</span><br><span class="line">        <span class="variable">.O</span>                              (gt0_rxusrclk_i)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    BUFG txoutclk_bufg0_i1</span><br><span class="line">    (</span><br><span class="line">        <span class="variable">.I</span>                              (gt1_txoutclk_i)，</span><br><span class="line">        <span class="variable">.O</span>                              (gt1_txusrclk_i)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    BUFG rxoutclk_bufg1_i1</span><br><span class="line">    (</span><br><span class="line">        <span class="variable">.I</span>                              (gt1_rxoutclk_i)，</span><br><span class="line">        <span class="variable">.O</span>                              (gt1_rxusrclk_i)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> GT0_TXUSRCLK_OUT = gt0_txusrclk_i;</span><br><span class="line"><span class="keyword">assign</span> GT0_TXUSRCLK2_OUT = gt0_txusrclk_i;</span><br><span class="line"><span class="keyword">assign</span> GT0_RXUSRCLK_OUT = gt0_rxusrclk_i;</span><br><span class="line"><span class="keyword">assign</span> GT0_RXUSRCLK2_OUT = gt0_rxusrclk_i;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">assign</span> GT1_TXUSRCLK_OUT = gt1_txusrclk_i;</span><br><span class="line"><span class="keyword">assign</span> GT1_TXUSRCLK2_OUT = gt1_txusrclk_i;</span><br><span class="line"><span class="keyword">assign</span> GT1_RXUSRCLK_OUT = gt1_rxusrclk_i;</span><br><span class="line"><span class="keyword">assign</span> GT1_RXUSRCLK2_OUT = gt1_rxusrclk_i;</span><br></pre></td></tr></table></figure>
+
+<p>修改之后，通道0与通道1的时钟域相互独立，接收数据后使用FIFO或RAM将数据同步到FPGA内部时钟域下进行进一步处理，发送也同理。</p>
+]]></content>
+      <categories>
+        <category>FPGA</category>
+      </categories>
+  </entry>
+  <entry>
     <title>数字下变频(DDC)、数字上变频(DUC)</title>
     <url>//article/DDC_DUC.html</url>
     <content><![CDATA[<blockquote>
@@ -155,31 +180,6 @@
       </categories>
   </entry>
   <entry>
-    <title>GT Wizard 多通道问题</title>
-    <url>//article/GT_Wizard_MultiChannel_issue.html</url>
-    <content><![CDATA[<blockquote>
-<p>在使用Xilinx提供的GT Wizard IP核时例化了多个两个收发通道，前期测试时只接了通道0，测试正常。但后期接入通道1时出现问题。当我断开通道0，只连接通道1时，数据接收错乱了。多方查询后发现是使用Vivado生成的仿真例程有问题，修改例程文件中的时钟连接逻辑即可解决例化多通道时只使用单通道有可能出现数据时钟错乱的问题。</p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><ul>
-<li>Vivado 2021.2.1</li>
-<li>VScode Portable</li>
-</ul>
-<h2 id="分析解决"><a href="#分析解决" class="headerlink" title="分析解决"></a>分析解决</h2><h3 id="问题定位"><a href="#问题定位" class="headerlink" title="问题定位"></a>问题定位</h3><p>右键IP核生成IP仿真例程后，可以在工程列表中找到类似<code>gtwizard_0_GT_USRCLK_SOURCE。v</code>的文件，这是用于配置GTX时钟资源的文件，其中在末尾的发送与接收时钟输出的语句可以看到问题所在，<strong>例程在仿真时输出的时钟全部采用通道0的时钟，因此在综合后上板子调试后，若通道0空载，则输出的恢复时钟混乱造成数据处理时序混乱</strong>。代码如下:</p>
-<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line">    <span class="comment">// Instantiate a MMCM module to divide the reference clock. Uses internal feedback</span></span><br><span class="line">    <span class="comment">// for improved jitter performance， and to avoid consuming an additional BUFG</span></span><br><span class="line"></span><br><span class="line">    BUFG txoutclk_bufg0_i</span><br><span class="line">    (</span><br><span class="line">        <span class="variable">.I</span>                              (gt0_txoutclk_i)，</span><br><span class="line">        <span class="variable">.O</span>                              (gt0_txusrclk_i)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    BUFG rxoutclk_bufg1_i</span><br><span class="line">    (</span><br><span class="line">        <span class="variable">.I</span>                              (gt0_rxoutclk_i)，</span><br><span class="line">        <span class="variable">.O</span>                              (gt0_rxusrclk_i)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> GT0_TXUSRCLK_OUT = gt0_txusrclk_i;</span><br><span class="line"><span class="keyword">assign</span> GT0_TXUSRCLK2_OUT = gt0_txusrclk_i;</span><br><span class="line"><span class="keyword">assign</span> GT0_RXUSRCLK_OUT = gt0_rxusrclk_i;</span><br><span class="line"><span class="keyword">assign</span> GT0_RXUSRCLK2_OUT = gt0_rxusrclk_i;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">assign</span> GT1_TXUSRCLK_OUT = gt0_txusrclk_i;</span><br><span class="line"><span class="keyword">assign</span> GT1_TXUSRCLK2_OUT = gt0_txusrclk_i;</span><br><span class="line"><span class="keyword">assign</span> GT1_RXUSRCLK_OUT = gt0_rxusrclk_i;</span><br><span class="line"><span class="keyword">assign</span> GT1_RXUSRCLK2_OUT = gt0_rxusrclk_i;</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="问题定位-1"><a href="#问题定位-1" class="headerlink" title="问题定位"></a>问题定位</h3><p>因此，需要将通道1的时钟源修改回其原本的内部恢复&#x2F;发送时钟。需要增加一些两个BUFG的资源，代码如下:</p>
-<figure class="highlight verilog"><table><tr><td class="code"><pre><span class="line">    <span class="comment">// Instantiate a MMCM module to divide the reference clock. Uses internal feedback</span></span><br><span class="line">    <span class="comment">// for improved jitter performance， and to avoid consuming an additional BUFG</span></span><br><span class="line"></span><br><span class="line">    BUFG txoutclk_bufg0_i0</span><br><span class="line">    (</span><br><span class="line">        <span class="variable">.I</span>                              (gt0_txoutclk_i)，</span><br><span class="line">        <span class="variable">.O</span>                              (gt0_txusrclk_i)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    BUFG rxoutclk_bufg1_i0</span><br><span class="line">    (</span><br><span class="line">        <span class="variable">.I</span>                              (gt0_rxoutclk_i)，</span><br><span class="line">        <span class="variable">.O</span>                              (gt0_rxusrclk_i)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    BUFG txoutclk_bufg0_i1</span><br><span class="line">    (</span><br><span class="line">        <span class="variable">.I</span>                              (gt1_txoutclk_i)，</span><br><span class="line">        <span class="variable">.O</span>                              (gt1_txusrclk_i)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    BUFG rxoutclk_bufg1_i1</span><br><span class="line">    (</span><br><span class="line">        <span class="variable">.I</span>                              (gt1_rxoutclk_i)，</span><br><span class="line">        <span class="variable">.O</span>                              (gt1_rxusrclk_i)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> GT0_TXUSRCLK_OUT = gt0_txusrclk_i;</span><br><span class="line"><span class="keyword">assign</span> GT0_TXUSRCLK2_OUT = gt0_txusrclk_i;</span><br><span class="line"><span class="keyword">assign</span> GT0_RXUSRCLK_OUT = gt0_rxusrclk_i;</span><br><span class="line"><span class="keyword">assign</span> GT0_RXUSRCLK2_OUT = gt0_rxusrclk_i;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">assign</span> GT1_TXUSRCLK_OUT = gt1_txusrclk_i;</span><br><span class="line"><span class="keyword">assign</span> GT1_TXUSRCLK2_OUT = gt1_txusrclk_i;</span><br><span class="line"><span class="keyword">assign</span> GT1_RXUSRCLK_OUT = gt1_rxusrclk_i;</span><br><span class="line"><span class="keyword">assign</span> GT1_RXUSRCLK2_OUT = gt1_rxusrclk_i;</span><br></pre></td></tr></table></figure>
-
-<p>修改之后，通道0与通道1的时钟域相互独立，接收数据后使用FIFO或RAM将数据同步到FPGA内部时钟域下进行进一步处理，发送也同理。</p>
-]]></content>
-      <categories>
-        <category>FPGA</category>
-      </categories>
-  </entry>
-  <entry>
     <title>本站数学方程式渲染模板</title>
     <url>//article/Mathematical.html</url>
     <content><![CDATA[<blockquote>
@@ -198,48 +198,6 @@
 <h2 id="使用指定标签标记方程"><a href="#使用指定标签标记方程" class="headerlink" title="使用指定标签标记方程"></a>使用指定标签标记方程</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$$x+1\over\sqrt&#123;1-x^2&#125; \tag&#123;i&#125;\label&#123;eq_tag&#125;$$</span><br></pre></td></tr></table></figure>
 <p>$$x+1\over\sqrt{1-x^2} \tag{i}\label{eq_tag}$$<br>Equation $\eqref{eq_tag}$ use <code>\tag&#123;&#125;</code> instead of automatic numbering.</p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>ViVado报错记录及解决方式</title>
-    <url>//article/Vivado_Log_Resolution.html</url>
-    <content><![CDATA[<blockquote>
-<p>记录日常开发过程中遇到的各种错误极其解决方式。文章主要分为三个部分，对应FPGA编译过程中的编译，综合，比特流生成。同时还将记录仿真过程中遇到的奇奇怪怪的问题。更新中…</p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="Generate-Bitstream-Failed"><a href="#Generate-Bitstream-Failed" class="headerlink" title="Generate Bitstream Failed"></a><center>Generate Bitstream Failed</center></h2><h3 id="DRC-NSTD-1"><a href="#DRC-NSTD-1" class="headerlink" title="[DRC NSTD-1]"></a>[DRC NSTD-1]</h3><ul>
-<li><p><strong>问题</strong><br>引脚定义了，没有使用或者没做物理约束导致生成bit文件报错，DRC电气检测失败。此处特指顶层文件输入输出引脚。</p>
-</li>
-<li><p><strong>解决</strong></p>
-<p>  1.找到未使用引脚并注释。</p>
-<p>  2.使用TCL文件忽略该项报错,TCL文件内容如下，手动创建该文件后，在Vivado右栏选择Setting-&gt;Project Settings-&gt;Implementation-&gt;Write Bitstream-&gt;tcl.pre选择该文件并导入后重新执行Generate Bitstream。</p>
-<figure class="highlight tcl"><table><tr><td class="code"><pre><span class="line">set_property SEVERITY &#123;Warning&#125; [get_drc_checks NSTD<span class="number">-1</span>]</span><br><span class="line">set_property SEVERITY &#123;Warning&#125; [get_drc_checks UCIO<span class="number">-1</span>]</span><br><span class="line">set_property SEVERITY &#123;Warning&#125; [get_drc_checks RTSTAT<span class="number">-1</span>]</span><br></pre></td></tr></table></figure></li>
-</ul>
-<hr>
-<h2 id="Run-Implementation-Failed"><a href="#Run-Implementation-Failed" class="headerlink" title="Run Implementation Failed"></a><center>Run Implementation Failed</center></h2><h3 id="DRC-UTLZ-1"><a href="#DRC-UTLZ-1" class="headerlink" title="[DRC UTLZ-1]"></a>[DRC UTLZ-1]</h3><blockquote>
-<p>Resource utilization: DSP48E1 over-utilized in Top Level Design (This design requires more DSP48E1 cells than are available in the target device. This design requires 1211 of such cell types but only 900 compatible sites are available in the target device. Please analyze your synthesis results and constraints to ensure the design is mapped to Xilinx primitives as expected. If so, please consider targeting a larger device.)</p>
-</blockquote>
-<ul>
-<li><p><strong>问题</strong><br>提示很明显指出,DSP资源不足.</p>
-</li>
-<li><p><strong>解决</strong><br>点击 Open Synthesized Design -&gt; Report Utilization 查看各个模块DSP使用情况,优化DSP使用.一般需要关注DDS,FIR,CFR等模块.</p>
-</li>
-</ul>
-<hr>
-<h2 id="Run-Synthesis-Failed"><a href="#Run-Synthesis-Failed" class="headerlink" title="Run Synthesis Failed"></a><center>Run Synthesis Failed</center></h2><h3 id="Synth-8-5535"><a href="#Synth-8-5535" class="headerlink" title="[Synth 8-5535]"></a>[Synth 8-5535]</h3><blockquote>
-<p>port <sys_clk> has illegal connections. It is illegal to have a port connected to an input buffer and other components. The following are the port connections : Input Buffer: Port I of instance clkin1_ibufg(IBUF) in module <clk_wiz_0_clk_wiz> Other Components: Port C of instance sys_rst_n_reg(FD) in module ddr3_rw_top</p>
-</blockquote>
-<ul>
-<li><p><strong>问题</strong><br>顶层时钟引脚未经过IBUF直接使用会导致此错误</p>
-</li>
-<li><p><strong>解决</strong><br>  使用<code>IBUF</code>和<code>BUFG</code>原语将时钟导入输入时钟缓冲和全局时钟缓冲后使用。<code>IBUFG</code>即输入全局缓冲，是与专用全局时钟输入管脚相连接的首级全局缓冲。所有从全局时钟管脚输入的信号必须经过IBUF元，否则在布局布线时会报错。 IBUFG支持AGP、CTT、GTL、GTLP、HSTL、LVCMOS、LVDCI、LVDS、LVPECL、LVTTL、PCI、PCIX和 SSTL等多种格式的IO标准。<code>BUFG</code><br>  是全局缓冲，它的输入是IBUFG的输出，BUFG的输出到达FPGA内部的IOB、CLB、选择性块RAM的时钟延迟和抖动最小。</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>FPGA</category>
-        <category>Vivado</category>
-      </categories>
   </entry>
   <entry>
     <title>FreeRTOS</title>
@@ -339,6 +297,48 @@
 ]]></content>
       <categories>
         <category>嵌入式</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>ViVado报错记录及解决方式</title>
+    <url>//article/Vivado_Log_Resolution.html</url>
+    <content><![CDATA[<blockquote>
+<p>记录日常开发过程中遇到的各种错误极其解决方式。文章主要分为三个部分，对应FPGA编译过程中的编译，综合，比特流生成。同时还将记录仿真过程中遇到的奇奇怪怪的问题。更新中…</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="Generate-Bitstream-Failed"><a href="#Generate-Bitstream-Failed" class="headerlink" title="Generate Bitstream Failed"></a><center>Generate Bitstream Failed</center></h2><h3 id="DRC-NSTD-1"><a href="#DRC-NSTD-1" class="headerlink" title="[DRC NSTD-1]"></a>[DRC NSTD-1]</h3><ul>
+<li><p><strong>问题</strong><br>引脚定义了，没有使用或者没做物理约束导致生成bit文件报错，DRC电气检测失败。此处特指顶层文件输入输出引脚。</p>
+</li>
+<li><p><strong>解决</strong></p>
+<p>  1.找到未使用引脚并注释。</p>
+<p>  2.使用TCL文件忽略该项报错,TCL文件内容如下，手动创建该文件后，在Vivado右栏选择Setting-&gt;Project Settings-&gt;Implementation-&gt;Write Bitstream-&gt;tcl.pre选择该文件并导入后重新执行Generate Bitstream。</p>
+<figure class="highlight tcl"><table><tr><td class="code"><pre><span class="line">set_property SEVERITY &#123;Warning&#125; [get_drc_checks NSTD<span class="number">-1</span>]</span><br><span class="line">set_property SEVERITY &#123;Warning&#125; [get_drc_checks UCIO<span class="number">-1</span>]</span><br><span class="line">set_property SEVERITY &#123;Warning&#125; [get_drc_checks RTSTAT<span class="number">-1</span>]</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h2 id="Run-Implementation-Failed"><a href="#Run-Implementation-Failed" class="headerlink" title="Run Implementation Failed"></a><center>Run Implementation Failed</center></h2><h3 id="DRC-UTLZ-1"><a href="#DRC-UTLZ-1" class="headerlink" title="[DRC UTLZ-1]"></a>[DRC UTLZ-1]</h3><blockquote>
+<p>Resource utilization: DSP48E1 over-utilized in Top Level Design (This design requires more DSP48E1 cells than are available in the target device. This design requires 1211 of such cell types but only 900 compatible sites are available in the target device. Please analyze your synthesis results and constraints to ensure the design is mapped to Xilinx primitives as expected. If so, please consider targeting a larger device.)</p>
+</blockquote>
+<ul>
+<li><p><strong>问题</strong><br>提示很明显指出,DSP资源不足.</p>
+</li>
+<li><p><strong>解决</strong><br>点击 Open Synthesized Design -&gt; Report Utilization 查看各个模块DSP使用情况,优化DSP使用.一般需要关注DDS,FIR,CFR等模块.</p>
+</li>
+</ul>
+<hr>
+<h2 id="Run-Synthesis-Failed"><a href="#Run-Synthesis-Failed" class="headerlink" title="Run Synthesis Failed"></a><center>Run Synthesis Failed</center></h2><h3 id="Synth-8-5535"><a href="#Synth-8-5535" class="headerlink" title="[Synth 8-5535]"></a>[Synth 8-5535]</h3><blockquote>
+<p>port <sys_clk> has illegal connections. It is illegal to have a port connected to an input buffer and other components. The following are the port connections : Input Buffer: Port I of instance clkin1_ibufg(IBUF) in module <clk_wiz_0_clk_wiz> Other Components: Port C of instance sys_rst_n_reg(FD) in module ddr3_rw_top</p>
+</blockquote>
+<ul>
+<li><p><strong>问题</strong><br>顶层时钟引脚未经过IBUF直接使用会导致此错误</p>
+</li>
+<li><p><strong>解决</strong><br>  使用<code>IBUF</code>和<code>BUFG</code>原语将时钟导入输入时钟缓冲和全局时钟缓冲后使用。<code>IBUFG</code>即输入全局缓冲，是与专用全局时钟输入管脚相连接的首级全局缓冲。所有从全局时钟管脚输入的信号必须经过IBUF元，否则在布局布线时会报错。 IBUFG支持AGP、CTT、GTL、GTLP、HSTL、LVCMOS、LVDCI、LVDS、LVPECL、LVTTL、PCI、PCIX和 SSTL等多种格式的IO标准。<code>BUFG</code><br>  是全局缓冲，它的输入是IBUFG的输出，BUFG的输出到达FPGA内部的IOB、CLB、选择性块RAM的时钟延迟和抖动最小。</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>FPGA</category>
+        <category>Vivado</category>
       </categories>
   </entry>
   <entry>
