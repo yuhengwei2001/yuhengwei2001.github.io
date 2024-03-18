@@ -1,318 +1,191 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.1.1">
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-  <meta name="google-site-verification" content="U-pa3X9SQNEi6HMQiD8Mr_9DhJ1meQ_ixQLSkBseAf0">
-  <meta name="msvalidate.01" content="3A4D40B11C833304044E8715D0F9AB08">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"yuhengwei2001.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.19.1","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#DC143C","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-
-    <meta name="description" content="概述了数字变频的数学原理与实际使用情况,使用Matlab仿真,先构造频域连续的宽带信号模拟基带数字信号,如果利用傅里叶反变换构造了时域信号用于仿真.文章给出了仿真代码与结果图.">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>数字下变频(DDC)、数字上变频(DUC) | Rain的小破站</title><meta name="author" content="Rain"><meta name="copyright" content="Rain"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="概述了数字变频的数学原理与实际使用情况,使用Matlab仿真,先构造频域连续的宽带信号模拟基带数字信号,如果利用傅里叶反变换构造了时域信号用于仿真.文章给出了仿真代码与结果图.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数字下变频(DDC)、数字上变频(DUC)">
 <meta property="og:url" content="https://yuhengwei2001.github.io/article/DDC_DUC.html">
 <meta property="og:site_name" content="Rain的小破站">
 <meta property="og:description" content="概述了数字变频的数学原理与实际使用情况,使用Matlab仿真,先构造频域连续的宽带信号模拟基带数字信号,如果利用傅里叶反变换构造了时域信号用于仿真.文章给出了仿真代码与结果图.">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://yuhengwei2001.github.io/myImage//%E5%AE%BD%E5%B8%A6%E4%BF%A1%E5%8F%B7.svg">
-<meta property="og:image" content="https://yuhengwei2001.github.io/myImage//%E8%BD%BD%E6%B3%A2.svg">
-<meta property="og:image" content="https://yuhengwei2001.github.io/myImage//%E8%B0%83%E5%88%B6%E6%B3%A2.svg">
-<meta property="og:image" content="https://yuhengwei2001.github.io/myImage//%E5%8F%A0%E5%8A%A0.svg">
-<meta property="og:image" content="https://yuhengwei2001.github.io/myImage//%E7%AE%80%E5%8D%95%E5%8F%A0%E5%8A%A0.svg">
-<meta property="og:image" content="https://yuhengwei2001.github.io/myImage/%E5%85%A8%E5%9B%BE.svg">
+<meta property="og:image" content="https://s2.loli.net/2024/03/06/25NJ9CaO1qmjGcM.jpg">
 <meta property="article:published_time" content="2024-02-23T13:38:57.000Z">
-<meta property="article:modified_time" content="2024-03-11T06:54:09.458Z">
+<meta property="article:modified_time" content="2024-03-18T01:07:32.398Z">
 <meta property="article:author" content="Rain">
 <meta property="article:tag" content="FPGA、Vivado、通信基站、基带数字信号处理、嵌入式技术等">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://yuhengwei2001.github.io/myImage//%E5%AE%BD%E5%B8%A6%E4%BF%A1%E5%8F%B7.svg">
-
-
-<link rel="canonical" href="https://yuhengwei2001.github.io/article/DDC_DUC.html">
-
-
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://yuhengwei2001.github.io/article/DDC_DUC.html","path":"/article/DDC_DUC.html","title":"数字下变频(DDC)、数字上变频(DUC)"}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>数字下变频(DDC)、数字上变频(DUC) | Rain的小破站</title>
-  
-
-
-
-
-
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <p class="site-title">Rain的小破站</p>
-      <i class="logo-line"></i>
-    </a>
-      <p class="site-subtitle" itemprop="description">不知名的FPGA工程师的小破站</p>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="搜索" role="button">
-        <i class="fa fa-search fa-fw fa-lg"></i>
-    </div>
-  </div>
-</div>
-
-
-
-<nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-分类"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-时间轴"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>时间轴</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
-        </a>
-      </li>
-  </ul>
-</nav>
-
-
-
-  <div class="search-pop-overlay">
-    <div class="popup search-popup"><div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="搜索..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close" role="button">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div class="search-result-container no-result">
-  <div class="search-result-icon">
-    <i class="fa fa-spinner fa-pulse fa-5x"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
-
-</header>
-        
-  
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E4%B8%8A%E5%8F%98%E9%A2%91-DUC-%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">数字上变频(DUC)数学原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Matlab%E6%A8%A1%E6%8B%9F"><span class="nav-number">3.</span> <span class="nav-text">Matlab模拟</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E5%9F%BA%E5%B8%A6%E6%97%B6%E5%9F%9F%E4%BF%A1%E5%8F%B7"><span class="nav-number">3.1.</span> <span class="nav-text">建立基带时域信号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E8%BD%BD%E6%B3%A2%E6%97%B6%E5%9F%9F%E4%BF%A1%E5%8F%B7"><span class="nav-number">3.2.</span> <span class="nav-text">建立载波时域信号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%91%E8%B0%B1%E6%90%AC%E7%A7%BB"><span class="nav-number">3.3.</span> <span class="nav-text">频谱搬移</span></a></li></ol></li></ol></div>
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="Rain"
-      src="/uploads/custom-logo.png">
-  <p class="site-author-name" itemprop="name">Rain</p>
-  <div class="site-description" itemprop="description">FPGA、Xilinx、通信基站、基带数字信号处理、嵌入式技术等</div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">7</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-          <a href="/categories/">
-        <span class="site-state-item-count">4</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-  </nav>
-</div>
-  <div class="links-of-author animated">
-      <span class="links-of-author-item">
-        <span class="exturl" data-url="bWFpbHRvOnl1aGVuZ3dlaTIwMDFAZ21haWwuY29t" title="E-Mail → mailto:yuhengwei2001@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
-      </span>
-      <span class="links-of-author-item">
-        <span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1l1SFdFSQ==" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;YuHWEI"><i class="fa custom csdn fa-fw"></i>CSDN</span>
-      </span>
-  </div>
-  <div class="cc-license animated" itemprop="license">
-    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
-  </div>
-
-        </div>
-      </div>
-    </div>
-
+<meta name="twitter:image" content="https://s2.loli.net/2024/03/06/25NJ9CaO1qmjGcM.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://yuhengwei2001.github.io/article/DDC_DUC.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="U-pa3X9SQNEi6HMQiD8Mr_9DhJ1meQ_ixQLSkBseAf0"/><meta name="bing_site_verification" content="3A4D40B11C833304044E8715D0F9AB08"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: {"limitDay":180,"position":"top","messagePrev":"距离上次更新已经过了","messageNext":"天，请注意内容是否具有时效性，如有需要请评论，或通过主页联系方式请求帮助。"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":false,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体中文","cht_to_chs":"你已切换为简体中文","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"top-center"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '数字下变频(DDC)、数字上变频(DUC)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-03-18 09:07:32'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
     
-    <div class="sidebar-inner sidebar-blogroll">
-      <div class="links-of-blogroll animated">
-        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
-          链接
-        </div>
-        <ul class="links-of-blogroll-list">
-            <li class="links-of-blogroll-item">
-              <span class="exturl" data-url="aHR0cHM6Ly9jeGNjLWNvZGUuZ2l0aHViLmlvLw==" title="https:&#x2F;&#x2F;cxcc-code.github.io&#x2F;">无所不能老学长的Blog</span>
-            </li>
-        </ul>
-      </div>
-    </div>
-  </aside>
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
 
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
 
-    </div>
-
-    <div class="main-inner post posts-expand">
-
-
-  
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yuhengwei2001.github.io/article/DDC_DUC.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/custom-logo.png">
-      <meta itemprop="name" content="Rain">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Rain的小破站">
-      <meta itemprop="description" content="FPGA、Xilinx、通信基站、基带数字信号处理、嵌入式技术等">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="数字下变频(DDC)、数字上变频(DUC) | Rain的小破站">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          数字下变频(DDC)、数字上变频(DUC)
-        </h1>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2024-02-23 21:38:57" itemprop="dateCreated datePublished" datetime="2024-02-23T21:38:57+08:00">2024-02-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-03-11 14:54:09" itemprop="dateModified" datetime="2024-03-11T14:54:09+08:00">2024-03-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Math/" itemprop="url" rel="index"><span itemprop="name">Math</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span id="busuanzi_value_page_pv"></span>
-    </span>
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.2k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>8 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
+        document.head.appendChild(script)
+      })
     
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
     
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
     
-    <div class="post-body" itemprop="articleBody"><blockquote>
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.1.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (true) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2024/03/06/25NJ9CaO1qmjGcM.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa-solid fa-bars"></i><span> 更多</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 介绍</span></a></li><li><a class="site-page child" href="/log/"><i class="fa-fw fa-solid fa-pencil"></i><span> 日志</span></a></li><li><a class="site-page child" href="/article/blogsetting.html"><i class="fa-fw fa-solid fa-sliders"></i><span> 配置</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2024/03/15/QucEfsrm5C41ONe.png')"><nav id="nav"><span id="blog-info"><a href="/" title="Rain的小破站"></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa-solid fa-bars"></i><span> 更多</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 介绍</span></a></li><li><a class="site-page child" href="/log/"><i class="fa-fw fa-solid fa-pencil"></i><span> 日志</span></a></li><li><a class="site-page child" href="/article/blogsetting.html"><i class="fa-fw fa-solid fa-sliders"></i><span> 配置</span></a></li></ul></div></div><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">数字下变频(DDC)、数字上变频(DUC)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-02-23T13:38:57.000Z" title="发表于 2024-02-23 21:38:57">2024-02-23</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-03-18T01:07:32.398Z" title="更新于 2024-03-18 09:07:32">2024-03-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Math/">Math</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">21k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>1:18分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="数字下变频(DDC)、数字上变频(DUC)"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
 <p>概述了数字变频的数学原理与实际使用情况,使用Matlab仿真,先构造频域连续的宽带信号模拟基带数字信号,如果利用傅里叶反变换构造了时域信号用于仿真.文章给出了仿真代码与结果图.</p>
 </blockquote>
 <span id="more"></span>
 
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在无线通信中，数据由核心网下传至基站，基站经过处理后变成电磁信号对外发送，最后到达用户端。在基站中，核心网下发的未被处理过的数字信号被称为基带信号。基带信号通常是零频宽&#x2F;窄带信号。基带信号的采样率较低，不能满足射频发射的要求，所以基带信号往往经过滤波和内插转换成高采样率，从而调制到中频载波频率上.<br>此时若基站接收到两路不同的基带信号，则无法做模拟上变频到同一频段，因为从频谱上看两个基带信号频谱叠加了，<a href="#%E9%A2%91%E8%B0%B1%E5%8F%A0%E5%8A%A0"><strong>相互干扰</strong></a>。若使用两个频段对外发送则过于浪费频谱资源了。在同一空间内，通信信道是有限的，因此需要在模拟上变频之前先做数字上变频，将两路基带信号调制到一起，成为在频谱上连续的基带信号后，做模拟上变频，调制到中高频后对外发送。这样就只会占用一条中频带，节约了无线资源。</p>
 <blockquote>
-<p>具体可以看这篇博客<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0hpV2FuZ1dlbkJpbmcvYXJ0aWNsZS9kZXRhaWxzLzExMjMwNjY3Mw==">[4G&amp;5G专题-9]：RRU 数字上变频DUC与数字下变频DDC<i class="fa fa-external-link-alt"></i></span>。</p>
+<p>具体可以看这篇博客<a target="_blank" rel="noopener" href="https://blog.csdn.net/HiWangWenBing/article/details/112306673">[4G&amp;5G专题-9]：RRU 数字上变频DUC与数字下变频DDC</a>。</p>
 </blockquote>
-<h2 id="数字上变频-DUC-数学原理"><a href="#数字上变频-DUC-数学原理" class="headerlink" title="数字上变频(DUC)数学原理"></a>数字上变频(DUC)数学原理</h2><p>数字上变频本质是是将一个处于零频的宽带信号搬移至高于零频的频段。原理上就是信号的调制，数学原理可以参考：<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0hpV2FuZ1dlbkJpbmcvYXJ0aWNsZS9kZXRhaWxzLzExMDE2MjU0Ng==">通信系统中的调制解调<i class="fa fa-external-link-alt"></i></span>。</p>
-<p>从公式上看频谱搬移可以通过时域中的信号乘以一个<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zODkzOTgyNi9hcnRpY2xlL2RldGFpbHMvMTAyODkzNjU2">单音信号<i class="fa fa-external-link-alt"></i></span>实现，公式如下:<br>$$<br>y(t) &#x3D; x(t)*cos(\omega_1t)<br>$$</p>
-<p>其中$x(t)$为需要调制的信号，假设也为一个单音信号$sin(\omega_0t)$则:<br>$$<br>\begin{align}<br>y(t) &amp;&#x3D; sin(\omega_0t) * cos(\omega_1t) \nonumber\\<br>     &amp;&#x3D; \frac{sin(\omega_0+\omega_1)+cos(\omega_0-\omega_1)}{2} \nonumber<br>\end{align}<br>$$<br>由上可以得出频谱搬移后会出现镜像分别为$\omega_0+\omega_1$和$\omega_0-\omega_1$这两个频率上。但在基带处理中基带信号一般为<span class="exturl" data-url="aHR0cHM6Ly9yZi5lZWZvY3VzLmNvbS9hcnRpY2xlL2lkLTMzNTk5Ng==">IQ信号<i class="fa fa-external-link-alt"></i></span>，因此用于调制的信号也该是个复数信号。<br>所以有</p>
+<h2 id="数字上变频-DUC-数学原理"><a href="#数字上变频-DUC-数学原理" class="headerlink" title="数字上变频(DUC)数学原理"></a>数字上变频(DUC)数学原理</h2><p>数字上变频本质是是将一个处于零频的宽带信号搬移至高于零频的频段。原理上就是信号的调制，数学原理可以参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/HiWangWenBing/article/details/110162546">通信系统中的调制解调</a>。</p>
+<p>从公式上看频谱搬移可以通过时域中的信号乘以一个<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_38939826/article/details/102893656">单音信号</a>实现，公式如下:<br>$$<br>y(t) &#x3D; x(t)*cos(\omega_1t)<br>$$</p>
+<p>其中$x(t)$为需要调制的信号，假设也为一个单音信号$sin(\omega_0t)$则:<br>$$<br>\begin{align}<br>y(t) &amp;&#x3D; sin(\omega_0t) * cos(\omega_1t) \nonumber\\<br>     &amp;&#x3D; \frac{sin(\omega_0+\omega_1)+cos(\omega_0-\omega_1)}{2} \nonumber<br>\end{align}<br>$$<br>由上可以得出频谱搬移后会出现镜像分别为$\omega_0+\omega_1$和$\omega_0-\omega_1$这两个频率上。但在基带处理中基带信号一般为<a target="_blank" rel="noopener" href="https://rf.eefocus.com/article/id-335996">IQ信号</a>，因此用于调制的信号也该是个复数信号。<br>所以有</p>
 <p>$$<br>y(t) &#x3D; x(t)*e^{j2\pi f_0 t}<br>$$</p>
 <p>其中</p>
 <ul>
@@ -323,15 +196,14 @@
 <p>复指数信号的时域表达式为：</p>
 <p>$$<br>    e^{j2\pi f_0 t} &#x3D; \cos(\omega_1t) + j \sin(\omega_1t)<br>$$</p>
 <p>因此从时域上看:<br>$$<br>    y(t) &#x3D; x(t) * [cos(\omega_1t)+jsin(\omega_1t)]<br>$$</p>
-<p>假设基带信号为<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zODkzOTgyNi9hcnRpY2xlL2RldGFpbHMvMTAyODkzNjU2">单音信号<i class="fa fa-external-link-alt"></i></span>,其时域上三角函数表达式为:</p>
+<p>假设基带信号为<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_38939826/article/details/102893656">单音信号</a>,其时域上三角函数表达式为:</p>
 <p>$$<br>    x(t)&#x3D;cos(\omega_0t)+jsin(\omega_0t)<br>$$</p>
 <p>则时域的频谱搬移可以由下表示:<br>$$ \begin{align}<br>    y(t) &amp;&#x3D; [cos(\omega_0t)+jsin(\omega_0t)]*[cos(\omega_1t)+jsin(\omega_1t)] \nonumber\\<br>     &amp;&#x3D;[cos(\omega_0t)cos(\omega_1t)-sin(\omega_0t)sin(\omega_1t)]+j[cos(\omega_0t)sin(\omega_1t)+sin(\omega_0t)cos(\omega_1t)] \nonumber\\<br>     &amp;&#x3D;cos[(\omega_0+\omega_1)t]+jsin[(\omega_0+\omega_1)t] \nonumber<br>\end{align}<br>$$<br>由上面的计算可以看出原信号被搬移到了$\omega_0+\omega_1$上，若想得到位于$\omega_0-\omega_1$的信号则对IQ信号做差运算即可因为在FPGA中基带信号的实部和虚部是存在不同的变量中，可以单独拿出来做运算。复数在变换完成后可以只留下一个频率，这对我们基带处理带来了很大的便利。</p>
 <h2 id="Matlab模拟"><a href="#Matlab模拟" class="headerlink" title="Matlab模拟"></a>Matlab模拟</h2><h3 id="建立基带时域信号"><a href="#建立基带时域信号" class="headerlink" title="建立基带时域信号"></a>建立基带时域信号</h3><p>基带信号一般为零频的宽带或窄带信号，一开始的想法是利用不同频率的正弦波时域叠加构造宽带信号，但是傅里叶变换以后的叠加信号在频域上不连续。于是我反着来，先构建连续的频谱，然后用傅里叶反变换得到时域信号。</p>
 <p>首先创建一个长度为$N$的全0行向量,然后将带宽内的元素全部赋值为1.</p>
 <figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">spectrum = <span class="built_in">zeros</span>(<span class="number">1</span>, N);</span><br><span class="line">spectrum(f &lt;= bandwidth) = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
 <p>我们得到了一个在索引值小于bandwidth时值全为1的行向量，可以认定为信号频谱。于是可以构建两个这样的不同带宽的频谱如下图:</p>
-<center><img data-src="/myImage//宽带信号.svg" width="450" alt="图片描述"></center>
-
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/images/%E5%AE%BD%E5%B8%A6%E4%BF%A1%E5%8F%B7.svg" alt="宽带信号"></p>
 <p>接着为了得到时域信号我们对其做傅里叶反变换，然后再做傅里叶变换得到时域信号的频谱(觉得麻烦这步可以省略):</p>
 <figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">signal = ifft(spectrum);</span><br><span class="line">signal_fft  = fft(signal);</span><br></pre></td></tr></table></figure>
 <p>做傅里叶变换后，在高频会出现镜像，我们舍弃掉高频的部分的数据只讨论基带信号本身。<br>然后将代码简单假工一下做成函数方便一会调用。</p>
@@ -340,171 +212,198 @@
 <h3 id="建立载波时域信号"><a href="#建立载波时域信号" class="headerlink" title="建立载波时域信号"></a>建立载波时域信号</h3><p>直接生成特定频率的正弦波即可，注意为了一会与基带信号进行运算，要保证生成的信号长度与基带信号相同。函数代码如下</p>
 <figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">y</span> = <span class="title">wave_init</span><span class="params">(varargin)</span></span></span><br><span class="line">    p = inputParser;            <span class="comment">% 函数的输入解析器</span></span><br><span class="line">    p.addParameter(<span class="string">&#x27;fs&#x27;</span>,<span class="number">1000</span>);  <span class="comment">% 设置变量名和默认参数</span></span><br><span class="line">    p.addParameter(<span class="string">&#x27;L&#x27;</span>,<span class="number">1000</span>);      <span class="comment">% 设置变量名和默认参数</span></span><br><span class="line">    p.addParameter(<span class="string">&#x27;a1&#x27;</span>,<span class="number">0</span>);      <span class="comment">% 设置变量名和默认参数</span></span><br><span class="line">    p.addParameter(<span class="string">&#x27;f1&#x27;</span>,<span class="number">0</span>);      <span class="comment">% 设置变量名和默认参数</span></span><br><span class="line">    p.parse(varargin&#123;:&#125;);       <span class="comment">% 对输入变量进行解析，如果检测到前面的变量被赋值，则更新变量取值</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">% 定义参数</span></span><br><span class="line">    T = <span class="number">1</span>/p.Results.fs;               <span class="comment">% 采样间隔</span></span><br><span class="line">    t = (<span class="number">0</span>:p.Results.L<span class="number">-1</span>)*T;          <span class="comment">% 时间向量</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">% 生成正弦波信号</span></span><br><span class="line">    reslut = p.Results.a1*<span class="built_in">sin</span>(<span class="number">2</span>*<span class="built_in">pi</span>*p.Results.f1*t);</span><br><span class="line">    temp_fft=<span class="built_in">abs</span>(fft(reslut)); </span><br><span class="line">    f = <span class="built_in">linspace</span>(<span class="number">0</span>, p.Results.fs, p.Results.L); <span class="comment">% 频率范围</span></span><br><span class="line"></span><br><span class="line">    y.fft = temp_fft(<span class="number">1</span>:<span class="keyword">end</span>/<span class="number">2</span>);</span><br><span class="line">    y.f = f(<span class="number">1</span>:<span class="keyword">end</span>/<span class="number">2</span>);</span><br><span class="line">    y.<span class="built_in">real</span> = reslut;</span><br><span class="line">    y.t = t;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 <p>值得注意，这里是直接使用正弦信号进行快速傅里叶变换，傅里叶变换会将信号从时域转换到频域，得到频谱。频谱是一个复数，包含幅度和相位信息。取绝对值操作后，我们得到了频谱的幅度，这表示了在不同频率下信号的能量分布情况，当然也可以直接对信号进行平方运算，我们就可以的得到信号在频域上的能量分布情况，对信号的功率谱密度进行分析。利用以上函数构造两个频率为100Hz和130Hz的载波信号。</p>
-<center><img data-src="/myImage//载波.svg" width="450" alt="图片描述"></center>
-
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/images/%E8%BD%BD%E6%B3%A2.svg" alt="载波"></p>
 <h3 id="频谱搬移"><a href="#频谱搬移" class="headerlink" title="频谱搬移"></a>频谱搬移</h3><p>根据前文的计算，想要实现频谱搬移需要将基带信号与载波信号相乘。</p>
 <figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% 宽带信号</span></span><br><span class="line">wave_0 = broadband(<span class="string">&#x27;fs&#x27;</span>,<span class="number">1000</span>,<span class="string">&#x27;T&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;bandwidth&#x27;</span>,<span class="number">30</span>);</span><br><span class="line">wave_1 = broadband(<span class="string">&#x27;fs&#x27;</span>,<span class="number">1000</span>,<span class="string">&#x27;T&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;bandwidth&#x27;</span>,<span class="number">50</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">%载波信号</span></span><br><span class="line">c_wave = wave_init(<span class="string">&#x27;a1&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;f1&#x27;</span>,<span class="number">100</span>);</span><br><span class="line">c_wave_1 = wave_init(<span class="string">&#x27;a1&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;f1&#x27;</span>,<span class="number">130</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% 搬移</span></span><br><span class="line">s_wave = c_wave.<span class="built_in">real</span>.*wave_0.<span class="built_in">real</span>;</span><br><span class="line">s_wave_fft = <span class="built_in">abs</span>(fft(s_wave));</span><br><span class="line"></span><br><span class="line">s_wave_1 = c_wave_1.<span class="built_in">real</span>.*wave_1.<span class="built_in">real</span>;</span><br><span class="line">s_wave_fft_1 = <span class="built_in">abs</span>(fft(s_wave_1));</span><br></pre></td></tr></table></figure>
 
 <p>这是搬移后的频谱</p>
-<center><img data-src="/myImage//调制波.svg" width="450" alt="图片描述"></center>
-
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/images/%E8%B0%83%E5%88%B6%E6%B3%A2.svg" alt="调制波"></p>
 <p>随后我们再将调制波时域上相加，即可得到一个宽带信号。</p>
 <figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wave = s_wave + s_wave_1;</span><br><span class="line">wave_fft = <span class="built_in">abs</span>(fft(wave));</span><br></pre></td></tr></table></figure>
 <p>如图:</p>
-<center><img data-src="/myImage//叠加.svg" width="450" alt="图片描述"></center>
-
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/images/%E5%8F%A0%E5%8A%A0.svg" alt="叠加"></p>
 <p>若不进行搬移直接叠加会发生干扰，信号无法解调，如图:<a id="频谱叠加"></a></p>
-<center><img data-src="/myImage//简单叠加.svg" width="450" alt="图片描述"></center>
-
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/images/%E7%AE%80%E5%8D%95%E5%8F%A0%E5%8A%A0.svg" alt="简单叠加"></p>
 <p>这是主函数调试代码：</p>
 <figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">figure</span>(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% 宽带信号</span></span><br><span class="line">wave_0 = broadband(<span class="string">&#x27;fs&#x27;</span>,<span class="number">1000</span>,<span class="string">&#x27;T&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;bandwidth&#x27;</span>,<span class="number">30</span>);</span><br><span class="line">wave_1 = broadband(<span class="string">&#x27;fs&#x27;</span>,<span class="number">1000</span>,<span class="string">&#x27;T&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;bandwidth&#x27;</span>,<span class="number">50</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">%载波信号</span></span><br><span class="line">c_wave = wave_init(<span class="string">&#x27;a1&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;f1&#x27;</span>,<span class="number">100</span>);</span><br><span class="line">c_wave_1 = wave_init(<span class="string">&#x27;a1&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;f1&#x27;</span>,<span class="number">130</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% 搬移</span></span><br><span class="line">s_wave = c_wave.<span class="built_in">real</span>.*wave_0.<span class="built_in">real</span>;</span><br><span class="line">s_wave_fft = <span class="built_in">abs</span>(fft(s_wave));</span><br><span class="line"></span><br><span class="line">s_wave_1 = c_wave_1.<span class="built_in">real</span>.*wave_1.<span class="built_in">real</span>;</span><br><span class="line">s_wave_fft_1 = <span class="built_in">abs</span>(fft(s_wave_1));</span><br><span class="line"></span><br><span class="line">wave = s_wave + s_wave_1;</span><br><span class="line">wave_fft = <span class="built_in">abs</span>(fft(wave));</span><br><span class="line"></span><br><span class="line"><span class="comment">% s_wave_2 = wave_0.real + wave_1.real;</span></span><br><span class="line"><span class="comment">% s_wave_2_fft = abs(fft(s_wave_2));</span></span><br><span class="line"><span class="comment">% subplot(1,1,1);</span></span><br><span class="line"><span class="comment">% plot(wave_0.f, s_wave_2_fft(1:end/2));</span></span><br><span class="line"><span class="comment">% title(&quot;叠加频谱&quot;);</span></span><br><span class="line"></span><br><span class="line">subplot(<span class="number">7</span>,<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line"><span class="built_in">plot</span>(wave_0.f, wave_0.fft);</span><br><span class="line">title(<span class="string">&quot;信号α频谱&quot;</span>);</span><br><span class="line"></span><br><span class="line">subplot(<span class="number">7</span>,<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line"><span class="comment">% subplot(2,1,2);</span></span><br><span class="line"><span class="built_in">plot</span>(wave_1.f, wave_1.fft);</span><br><span class="line">title(<span class="string">&quot;信号β频谱&quot;</span>);</span><br><span class="line"></span><br><span class="line">subplot(<span class="number">7</span>,<span class="number">1</span>,<span class="number">3</span>);</span><br><span class="line"><span class="built_in">plot</span>(c_wave.f, c_wave.fft);</span><br><span class="line">title(<span class="string">&quot;载波频谱i&quot;</span>);</span><br><span class="line"></span><br><span class="line">subplot(<span class="number">7</span>,<span class="number">1</span>,<span class="number">4</span>);</span><br><span class="line"><span class="built_in">plot</span>(c_wave.f, c_wave_1.fft);</span><br><span class="line">title(<span class="string">&quot;载波频谱ii&quot;</span>);</span><br><span class="line"></span><br><span class="line">subplot(<span class="number">7</span>,<span class="number">1</span>,<span class="number">5</span>);</span><br><span class="line"><span class="built_in">plot</span>(c_wave.f, s_wave_fft(<span class="number">1</span>:<span class="keyword">end</span>/<span class="number">2</span>));</span><br><span class="line">title(<span class="string">&quot;调制波(α*i)频谱&quot;</span>);</span><br><span class="line"></span><br><span class="line">subplot(<span class="number">7</span>,<span class="number">1</span>,<span class="number">6</span>);</span><br><span class="line"><span class="built_in">plot</span>(c_wave.f, s_wave_fft_1(<span class="number">1</span>:<span class="keyword">end</span>/<span class="number">2</span>));</span><br><span class="line">title(<span class="string">&quot;调制波(β*ii)频谱&quot;</span>);</span><br><span class="line"></span><br><span class="line">subplot(<span class="number">7</span>,<span class="number">1</span>,<span class="number">7</span>);</span><br><span class="line"><span class="built_in">plot</span>(c_wave.f, wave_fft(<span class="number">1</span>:<span class="keyword">end</span>/<span class="number">2</span>));</span><br><span class="line">title(<span class="string">&quot;调制波叠加((α*i)+(β*ii))频谱&quot;</span>);</span><br></pre></td></tr></table></figure>
 
 <p>整体对比图</p>
-<center><img data-src="/myImage/全图.svg" width="450" alt="图片描述"></center>
-    </div>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/images/%E5%85%A8%E5%9B%BE.svg" alt="全图"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://yuhengwei2001.github.io">Rain</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://yuhengwei2001.github.io/article/DDC_DUC.html">https://yuhengwei2001.github.io/article/DDC_DUC.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://yuhengwei2001.github.io" target="_blank">Rain的小破站</a>！</span></div></div><div class="tag_share"><div class="post_share"></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E4%B8%8A%E5%8F%98%E9%A2%91-DUC-%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">数字上变频(DUC)数学原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Matlab%E6%A8%A1%E6%8B%9F"><span class="toc-number">3.</span> <span class="toc-text">Matlab模拟</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B%E5%9F%BA%E5%B8%A6%E6%97%B6%E5%9F%9F%E4%BF%A1%E5%8F%B7"><span class="toc-number">3.1.</span> <span class="toc-text">建立基带时域信号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B%E8%BD%BD%E6%B3%A2%E6%97%B6%E5%9F%9F%E4%BF%A1%E5%8F%B7"><span class="toc-number">3.2.</span> <span class="toc-text">建立载波时域信号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%91%E8%B0%B1%E6%90%AC%E7%A7%BB"><span class="toc-number">3.3.</span> <span class="toc-text">频谱搬移</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url('https://s2.loli.net/2024/03/15/QucEfsrm5C41ONe.png')"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2024 By Rain</div><div class="footer_custom_text"><a href="https://yuhengwei2001.github.io">人生一世，草生一春。来如风雨，去似微尘。</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
 
-    
-    
-    
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
 
-    <footer class="post-footer">
-          
-
-<div class="post-copyright">
-<ul>
-  <li class="post-copyright-author">
-      <strong>本文作者： </strong>Rain
-  </li>
-  <li class="post-copyright-link">
-      <strong>本文链接：</strong>
-      <a href="https://yuhengwei2001.github.io/article/DDC_DUC.html" title="数字下变频(DDC)、数字上变频(DUC)">https://yuhengwei2001.github.io/article/DDC_DUC.html</a>
-  </li>
-  <li class="post-copyright-license">
-      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
-  </li>
-</ul>
-</div>
-
-
-        
-
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/article/Vivado_Log_Resolution.html" rel="prev" title="ViVado报错记录及解决方式">
-                  <i class="fa fa-angle-left"></i> ViVado报错记录及解决方式
-                </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/article/GT_Wizard_MultiChannel_issue.html" rel="next" title="GT Wizard 多通道问题">
-                  GT Wizard 多通道问题 <i class="fa fa-angle-right"></i>
-                </a>
-            </div>
-          </div>
-    </footer>
-  </article>
-</div>
-
-
-
-
-
-
-    <div class="comments gitalk-container"></div>
-</div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-  <div class="copyright">
-    &copy; 2023 – 
-    <span itemprop="copyrightYear">2024</span>
-    <span class="with-love">
-      <i class="fa custom nationalflag"></i>
-    </span>
-    <span class="author" itemprop="copyrightHolder">Rain</span>
-  </div>
-<div class="wordcount">
-  <span class="post-meta-item">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-chart-line"></i>
-    </span>
-      <span>站点总字数：</span>
-    <span title="站点总字数">11k</span>
-  </span>
-  <span class="post-meta-item">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-coffee"></i>
-    </span>
-      <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">38 分钟</span>
-  </span>
-</div>
-<div class="busuanzi-count">
-    <span class="post-meta-item" id="busuanzi_container_site_uv">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-user"></i>
-      </span>
-      <span class="site-uv" title="总访客量">
-        <span id="busuanzi_value_site_uv"></span>
-      </span>
-    </span>
-    <span class="post-meta-item" id="busuanzi_container_site_pv">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-eye"></i>
-      </span>
-      <span class="site-pv" title="总访问量">
-        <span id="busuanzi_value_site_pv"></span>
-      </span>
-    </span>
-</div>
-
-    </div>
-  </footer>
-
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
   
-  <div class="back-to-top" role="button" aria-label="返回顶部">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
-  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const initGitalk = () => {
+    const gitalk = new Gitalk(Object.assign({
+      clientID: '25f9efa2950e7a09ca0e',
+      clientSecret: '09f2c57365dd5ce650b18df469855329d3a5944b',
+      repo: 'yuhengwei2001.github.io',
+      owner: 'yuhengwei2001',
+      admin: ['yuhengwei2001'],
+      id: '80c8515957992e1ef77674b7e5546b8f',
+      updateCountCallback: commentCount
+    },{"labels":["Gitalk"],"distractionFreeMode":false,"createIssueManually":false,"perPage":10,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"}))
 
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
+    gitalk.render('gitalk-container')
+  }
 
-
+  const loadGitalk = async() => {
+    if (typeof Gitalk === 'function') initGitalk()
+    else {
+      await getCSS('https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.css')
+      await getScript('https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.js')
+      initGitalk()
+    }
+  }
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
-<script src="/js/third-party/search/local-search.js"></script>
+  if ('Gitalk' === 'Gitalk' || !true) {
+    if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
 
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
 
+document.addEventListener('pjax:send', function () {
 
+  // removeEventListener
+  btf.removeGlobalFnEvent('pjax')
+  btf.removeGlobalFnEvent('themeChange')
 
-
-  <script src="/js/third-party/pace.js"></script>
-
-
+  document.getElementById('rightside').classList.remove('rightside-show')
   
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
 
+  typeof typed === 'object' && typed.destroy()
 
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
 
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
 
-  
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
 
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
-<script src="/js/third-party/math/mathjax.js"></script>
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
 
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+  typeof panguInit === 'function' && panguInit()
 
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"yuhengwei2001","repo":"yuhengwei2001.github.io","client_id":"25f9efa2950e7a09ca0e","client_secret":"09f2c57365dd5ce650b18df469855329d3a5944b","admin_user":"yuhengwei2001","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"80c8515957992e1ef77674b7e5546b8f"}</script>
-<script src="/js/third-party/comments/gitalk.js"></script>
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
 
-</body>
-</html>
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div><!-- hexo injector body_end start -->
+  <script data-pjax src="/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://rain.apifj.com/api/?user=yuhengwei2001";
+            var git_color =['#ebedf0', '#a2f7af', '#6ce480', '#54ad63', '#469252', '#31753c', '#1f5f2a', '#13531f', '#084111', '#032b09', '#000000'];
+            var git_user ="yuhengwei2001";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log("已挂载hexo-github-calendar https://github.com/Barry-Flynn/hexo-github-calendar");
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><!-- hexo injector body_end end --></body></html>
