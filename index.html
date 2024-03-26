@@ -54,7 +54,7 @@
   isHome: true,
   isHighlightShrink: false,
   isToc: false,
-  postUpdate: '2024-03-25 11:20:39'
+  postUpdate: '2024-03-26 17:58:13'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -178,10 +178,11 @@
 解决
   1.找到未使用引脚并注释。
   2.使用TCL文件忽略该项报错,TCL文件内容如下，手动创建该文件后，在Vivado右栏选择Setting-&gt;Project Settings-&gt;Implementation-&gt;Write Bitstream-&gt;tcl.pre选择该文件并导入后重新执行Generate Bitstream。
+  3.给引脚添加物理约束
 123set_property SEVERITY &#123;Warning&#125; [get_drc_checks NSTD-1]set_property SEVERITY &#123;Warning&#125; [get_drc_checks UCIO-1]set_property SEVERITY &#123;Warning&#125; [get_drc_checks RTSTAT-1]
 
 
-Run Implementation Fa ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/article/blogsetting.html" title="本站主题配置">本站主题配置</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-03-16T05:17:00.000Z" title="发表于 2024-03-16 13:17:00">2024-03-16</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/HEXO/">HEXO</a></span></div><div class="content">
+Run Imp ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/article/blogsetting.html" title="本站主题配置">本站主题配置</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-03-16T05:17:00.000Z" title="发表于 2024-03-16 13:17:00">2024-03-16</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/HEXO/">HEXO</a></span></div><div class="content">
 
 文章对主题_config.yml与_config.butterfly.yml文件的修改不做记录。若有看不懂的地方，请先认真阅读安装文档后欢迎评论或邮件提问探讨。
 
