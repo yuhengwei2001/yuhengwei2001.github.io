@@ -1,8 +1,8 @@
+https://yuhengwei2001.github.io/article/blogsetting.html
+https://yuhengwei2001.github.io/log/index.html
 https://yuhengwei2001.github.io/article/GT_Wizard_MultiChannel_issue.html
 https://yuhengwei2001.github.io/article/FFT.html
 https://yuhengwei2001.github.io/article/DDC_DUC.html
-https://yuhengwei2001.github.io/log/index.html
-https://yuhengwei2001.github.io/article/blogsetting.html
 https://yuhengwei2001.github.io/article/Vivado_Log_Resolution.html
 https://yuhengwei2001.github.io/article/solution_for_version_GLIBC_2_34_not_found.html
 https://yuhengwei2001.github.io/link/index.html
