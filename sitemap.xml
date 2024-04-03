@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yuhengwei2001.github.io/log/index.html</loc>
+    
+    <lastmod>2024-04-03</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://yuhengwei2001.github.io/article/blogsetting.html</loc>
     
     <lastmod>2024-04-03</lastmod>
@@ -14,15 +23,6 @@
     <loc>https://yuhengwei2001.github.io/article/The_Best_Config_Of_Game.html</loc>
     
     <lastmod>2024-04-02</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://yuhengwei2001.github.io/log/index.html</loc>
-    
-    <lastmod>2024-04-01</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -92,7 +92,7 @@
   </url>
   
   <url>
-    <loc>https://yuhengwei2001.github.io/about/index.html</loc>
+    <loc>https://yuhengwei2001.github.io/categories/index.html</loc>
     
     <lastmod>2024-03-18</lastmod>
     
@@ -101,7 +101,7 @@
   </url>
   
   <url>
-    <loc>https://yuhengwei2001.github.io/categories/index.html</loc>
+    <loc>https://yuhengwei2001.github.io/about/index.html</loc>
     
     <lastmod>2024-03-18</lastmod>
     
