@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>关闭Bing搜索后的动态UI效果</title>
+      <link href="//article/closeBingUI.html"/>
+      <url>//article/closeBingUI.html</url>
+      
+        <content type="html"><![CDATA[<ol><li>点击Edge右上角三个点</li><li>选择设置</li><li>选择隐私、搜索和服务</li><li>下滑到服务栏，点击地址栏和搜索</li><li>点击添加<br>搜索引擎:随意起一个名字<br>快捷方式:随意<br>URL:<a href="https://bing.com/search?q=%25s">https://bing.com/search?q=%s</a></li><li>保存退出后找到刚刚添加的搜索引擎，点击右侧三个小点选为默认引擎即可。</li></ol>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>打游戏最好的电脑配置!</title>
       <link href="//article/The_Best_Config_Of_Game.html"/>
       <url>//article/The_Best_Config_Of_Game.html</url>
