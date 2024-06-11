@@ -4,16 +4,16 @@
   <url>
     <loc>https://yuhengwei2001.github.io/article/Vivado_Log_Resolution.html</loc>
     
-    <lastmod>2024-05-07</lastmod>
+    <lastmod>2024-06-11</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://yuhengwei2001.github.io/article/zynq.html</loc>
+    <loc>https://yuhengwei2001.github.io/article/</loc>
     
-    <lastmod>2024-04-26</lastmod>
+    <lastmod>2024-06-07</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -22,7 +22,7 @@
   <url>
     <loc>https://yuhengwei2001.github.io/article/closeBingUI.html</loc>
     
-    <lastmod>2024-04-22</lastmod>
+    <lastmod>2024-05-22</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -139,7 +139,7 @@
 
   <url>
     <loc>https://yuhengwei2001.github.io/</loc>
-    <lastmod>2024-05-07</lastmod>
+    <lastmod>2024-06-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -149,42 +149,35 @@
   
   <url>
     <loc>https://yuhengwei2001.github.io/categories/Math/</loc>
-    <lastmod>2024-05-07</lastmod>
+    <lastmod>2024-06-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yuhengwei2001.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/</loc>
-    <lastmod>2024-05-07</lastmod>
+    <lastmod>2024-06-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yuhengwei2001.github.io/categories/FPGA/</loc>
-    <lastmod>2024-05-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://yuhengwei2001.github.io/categories/FPGA-ZYNQ/</loc>
-    <lastmod>2024-05-07</lastmod>
+    <lastmod>2024-06-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yuhengwei2001.github.io/categories/HEXO/</loc>
-    <lastmod>2024-05-07</lastmod>
+    <lastmod>2024-06-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yuhengwei2001.github.io/categories/FPGA/Vivado/</loc>
-    <lastmod>2024-05-07</lastmod>
+    <lastmod>2024-06-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>

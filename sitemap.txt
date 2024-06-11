@@ -1,5 +1,5 @@
 https://yuhengwei2001.github.io/article/Vivado_Log_Resolution.html
-https://yuhengwei2001.github.io/article/zynq.html
+https://yuhengwei2001.github.io/article/
 https://yuhengwei2001.github.io/article/closeBingUI.html
 https://yuhengwei2001.github.io/article/GT_Wizard_MultiChannel_issue.html
 https://yuhengwei2001.github.io/article/FFT.html
@@ -17,6 +17,5 @@ https://yuhengwei2001.github.io/
 https://yuhengwei2001.github.io/categories/Math/
 https://yuhengwei2001.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/
 https://yuhengwei2001.github.io/categories/FPGA/
-https://yuhengwei2001.github.io/categories/FPGA-ZYNQ/
 https://yuhengwei2001.github.io/categories/HEXO/
 https://yuhengwei2001.github.io/categories/FPGA/Vivado/
