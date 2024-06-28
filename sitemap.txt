@@ -1,3 +1,4 @@
+https://yuhengwei2001.github.io/log/index.html
 https://yuhengwei2001.github.io/article/VivadoUserGuide.html
 https://yuhengwei2001.github.io/article/ZYNQ.html
 https://yuhengwei2001.github.io/article/GTXOpticalCommunication.html
@@ -6,7 +7,6 @@ https://yuhengwei2001.github.io/article/closeBingUI.html
 https://yuhengwei2001.github.io/article/GT_Wizard_MultiChannel_issue.html
 https://yuhengwei2001.github.io/article/FFT.html
 https://yuhengwei2001.github.io/article/blogsetting.html
-https://yuhengwei2001.github.io/log/index.html
 https://yuhengwei2001.github.io/article/The_Best_Config_Of_Game.html
 https://yuhengwei2001.github.io/article/Mathematical.html
 https://yuhengwei2001.github.io/article/solution_for_version_GLIBC_2_34_not_found.html
