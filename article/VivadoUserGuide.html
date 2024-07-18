@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Vivado用户说明 | Rain的小破站</title><meta name="author" content="Rain"><meta name="copyright" content="Rain"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="综合 (Synthesis) 参考: UG901 Vivado Design Suite User Guide : Synthesis  综合设置-directive Default   功能：使用默认设置。 特点：提供一种平衡的优化方案，适合大多数设计需求。   RuntimeOptimized   功能：减少时序优化，消除一些RTL优化，以减少综合运行时间。 特点：优先考虑快速运行时间，可能会">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Vivado用户说明 | Rain的小破站</title><meta name="author" content="Rain"><meta name="copyright" content="Rain"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="综合 (Synthesis) 参考: UG901 Vivado Design Suite User Guide : Synthesis  综合设置约束 物理约束:这些约束定义引脚位置，以及单元如块ram、lut、flip - flop和设备配置设置的绝对或相对位置。  时序约束:这些约束定义了设计的频率要求。在没有时间限制的情况下，Vivado Design Suite仅针对电线长度和放置拥堵进行">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vivado用户说明">
 <meta property="og:url" content="https://yuhengwei2001.github.io/article/VivadoUserGuide.html">
 <meta property="og:site_name" content="Rain的小破站">
-<meta property="og:description" content="综合 (Synthesis) 参考: UG901 Vivado Design Suite User Guide : Synthesis  综合设置-directive Default   功能：使用默认设置。 特点：提供一种平衡的优化方案，适合大多数设计需求。   RuntimeOptimized   功能：减少时序优化，消除一些RTL优化，以减少综合运行时间。 特点：优先考虑快速运行时间，可能会">
+<meta property="og:description" content="综合 (Synthesis) 参考: UG901 Vivado Design Suite User Guide : Synthesis  综合设置约束 物理约束:这些约束定义引脚位置，以及单元如块ram、lut、flip - flop和设备配置设置的绝对或相对位置。  时序约束:这些约束定义了设计的频率要求。在没有时间限制的情况下，Vivado Design Suite仅针对电线长度和放置拥堵进行">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s2.loli.net/2024/03/06/25NJ9CaO1qmjGcM.jpg">
 <meta property="article:published_time" content="2024-06-27T06:48:24.000Z">
-<meta property="article:modified_time" content="2024-06-28T03:37:26.707Z">
+<meta property="article:modified_time" content="2024-06-28T08:39:23.861Z">
 <meta property="article:author" content="Rain">
 <meta property="article:tag" content="FPGA、Vivado、通信基站、基带数字信号处理、嵌入式技术等">
 <meta name="twitter:card" content="summary">
@@ -56,7 +56,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2024-06-28 11:37:26'
+  postUpdate: '2024-06-28 16:39:23'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -174,126 +174,117 @@
     document.addEventListener('pjax:send', () => { preloader.initLoading() })
     document.addEventListener('pjax:complete', () => { preloader.endLoading() })
   }
-})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2024/03/06/25NJ9CaO1qmjGcM.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">13</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa-solid fa-bars"></i><span> 更多</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 介绍</span></a></li><li><a class="site-page child" href="/log/"><i class="fa-fw fa-solid fa-pencil"></i><span> 日志</span></a></li><li><a class="site-page child" href="/article/blogsetting.html"><i class="fa-fw fa-solid fa-sliders"></i><span> 配置</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2024/03/28/cSehiBrJYZHmL63.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Rain的小破站"></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa-solid fa-bars"></i><span> 更多</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 介绍</span></a></li><li><a class="site-page child" href="/log/"><i class="fa-fw fa-solid fa-pencil"></i><span> 日志</span></a></li><li><a class="site-page child" href="/article/blogsetting.html"><i class="fa-fw fa-solid fa-sliders"></i><span> 配置</span></a></li></ul></div></div><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fas fa-search fa-fw"></i></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Vivado用户说明</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-06-27T06:48:24.000Z" title="发表于 2024-06-27 14:48:24">2024-06-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-06-28T03:37:26.707Z" title="更新于 2024-06-28 11:37:26">2024-06-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/FPGA/">FPGA</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">13k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>48 mins.分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Vivado用户说明"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="综合-Synthesis"><a href="#综合-Synthesis" class="headerlink" title="综合 (Synthesis)"></a>综合 (Synthesis)</h2><blockquote>
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2024/03/06/25NJ9CaO1qmjGcM.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">13</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa-solid fa-bars"></i><span> 更多</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 介绍</span></a></li><li><a class="site-page child" href="/log/"><i class="fa-fw fa-solid fa-pencil"></i><span> 日志</span></a></li><li><a class="site-page child" href="/article/blogsetting.html"><i class="fa-fw fa-solid fa-sliders"></i><span> 配置</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2024/03/28/cSehiBrJYZHmL63.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Rain的小破站"></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fa-fw fa-solid fa-bars"></i><span> 更多</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 介绍</span></a></li><li><a class="site-page child" href="/log/"><i class="fa-fw fa-solid fa-pencil"></i><span> 日志</span></a></li><li><a class="site-page child" href="/article/blogsetting.html"><i class="fa-fw fa-solid fa-sliders"></i><span> 配置</span></a></li></ul></div></div><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fas fa-search fa-fw"></i></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" rel="external nofollow noreferrer"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Vivado用户说明</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-06-27T06:48:24.000Z" title="发表于 2024-06-27 14:48:24">2024-06-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-06-28T08:39:23.861Z" title="更新于 2024-06-28 16:39:23">2024-06-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/FPGA/">FPGA</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">14k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>51 mins.分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Vivado用户说明"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="综合-Synthesis"><a href="#综合-Synthesis" class="headerlink" title="综合 (Synthesis)"></a>综合 (Synthesis)</h1><blockquote>
 <p>参考: UG901 Vivado Design Suite User Guide : Synthesis</p>
 </blockquote>
-<h3 id="综合设置"><a href="#综合设置" class="headerlink" title="综合设置"></a>综合设置</h3><h4 id="directive"><a href="#directive" class="headerlink" title="-directive"></a>-directive</h4><ol>
-<li><strong>Default</strong></li>
-</ol>
+<h2 id="综合设置"><a href="#综合设置" class="headerlink" title="综合设置"></a>综合设置</h2><h3 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h3><ul>
+<li><p>物理约束:这些约束定义引脚位置，以及单元如块ram、lut、flip - flop和设备配置设置的绝对或相对位置。</p>
+</li>
+<li><p>时序约束:这些约束定义了设计的频率要求。在没有时间限制的情况下，Vivado Design Suite仅针对电线长度和放置拥堵进行了优化设计。</p>
+</li>
+</ul>
+<h3 id="综合策略"><a href="#综合策略" class="headerlink" title="综合策略"></a>综合策略</h3><p><strong>Default</strong></p>
 <ul>
 <li>功能：使用默认设置。</li>
 <li>特点：提供一种平衡的优化方案，适合大多数设计需求。</li>
 </ul>
-<ol start="2">
-<li><strong>RuntimeOptimized</strong></li>
-</ol>
+<p><strong>RuntimeOptimized</strong></p>
+<blockquote>
+<p>RuntimeOptimized: Performs fewer timing optimizations and eliminates some RTL optimizations to reduce synthesis run time.</p>
+</blockquote>
 <ul>
 <li>功能：减少时序优化，消除一些RTL优化，以减少综合运行时间。</li>
 <li>特点：优先考虑快速运行时间，可能会牺牲一些设计性能。适用于对综合时间要求较高的设计场景。</li>
 </ul>
-<ol start="3">
-<li><strong>AreaOptimized_high</strong></li>
-</ol>
+<p><strong>AreaOptimized_high</strong></p>
+<blockquote>
+<p>Performs general area optimizations including forcing ternary adder implementation, applying new thresholds for use of carry chain in comparators, and implementing area-optimized multiplexers.</p>
+</blockquote>
 <ul>
 <li>功能：进行一般面积优化，包括强制三进制加法器实现，应用新的阈值以在比较器中使用进位链，并实现面积优化的多路复用器。</li>
 <li>特点：强调减少设计占用的面积。适用于面积受限的设计。</li>
 </ul>
-<ol start="4">
-<li><strong>AreaOptimized_medium</strong></li>
-</ol>
+<p><strong>AreaOptimized_medium</strong></p>
+<blockquote>
+<p>Performs general area optimizations including forcing ternary adder implementation, applying new thresholds for use of carry chain in comparators, and implementing area-optimized multiplexers.</p>
+</blockquote>
 <ul>
 <li>功能：进行一般面积优化，包括改变控制集优化的阈值，强制三进制加法器实现，降低DSP块推断的乘法器阈值，将移位寄存器移入BRAM，应用较低的阈值以在比较器中使用进位链，以及面积优化的多路复用器操作。</li>
 <li>特点：平衡面积优化和性能需求。适用于对面积有要求但不希望显著牺牲性能的设计。</li>
 </ul>
-<ol start="5">
-<li><strong>AlternateRoutability</strong></li>
-</ol>
+<p><strong>AlternateRoutability</strong></p>
 <ul>
 <li>功能：一组算法以改善可布线性（减少MUXFs和CARRYs的使用）。</li>
 <li>特点：提高设计的可布线性，减少布线拥堵。适用于布线复杂、容易出现拥堵的设计。</li>
 </ul>
-<ol start="6">
-<li><strong>AreaMapLargeShiftRegToBRAM</strong></li>
-</ol>
+<p><strong>AreaMapLargeShiftRegToBRAM</strong></p>
 <ul>
 <li>功能：检测大的移位寄存器并使用专用块RAM实现。</li>
 <li>特点：减少逻辑单元的使用，节省面积。适用于包含大量移位寄存器的设计。</li>
 </ul>
-<ol start="7">
-<li><strong>AreaMultThresholdDSP</strong></li>
-</ol>
+<p><strong>AreaMultThresholdDSP</strong></p>
 <ul>
 <li>功能：降低专用DSP块推断的阈值。</li>
 <li>特点：提高DSP块的利用率，减少逻辑单元的使用。适用于包含大量乘法运算的设计。</li>
 </ul>
-<ol start="8">
-<li><strong>FewerCarryChains</strong></li>
-</ol>
+<p><strong>FewerCarryChains</strong></p>
 <ul>
 <li>功能：使用更高的操作数大小阈值，以使用LUT代替进位链。</li>
 <li>特点：减少进位链的使用，优化逻辑单元的分配。适用于逻辑密集且希望减少进位链使用的设计。</li>
 </ul>
-<ol start="9">
-<li><strong>LogicCompaction</strong></li>
-</ol>
+<p><strong>LogicCompaction</strong></p>
 <ul>
 <li>功能：以一种使逻辑更紧凑的方式安排进位链和LUT，使用更少的SLICES。</li>
 <li>特点：减少逻辑单元的使用，但可能对时序QoR产生负面影响。适用于对面积有严格要求且能够接受时序性能轻微下降的设计。</li>
 </ul>
-<ol start="10">
-<li><strong>PerformanceOptimized</strong></li>
-</ol>
+<p><strong>PerformanceOptimized</strong></p>
 <ul>
 <li>功能：进行一般时序优化，包括降低逻辑级别，以牺牲面积为代价。</li>
 <li>特点：优化时序性能，适用于时序要求严格的设计。</li>
 </ul>
-<ol start="11">
-<li><strong>PowerOptimized_high</strong></li>
-</ol>
+<p><strong>PowerOptimized_high</strong></p>
 <ul>
 <li>功能：进行一般时序优化，包括增加逻辑级别，以牺牲面积为代价。</li>
 <li>特点：强调功耗优化，适用于功耗要求高的设计。</li>
 </ul>
-<ol start="12">
-<li><strong>PowerOptimized_medium</strong></li>
-</ol>
+<p><strong>PowerOptimized_medium</strong></p>
 <ul>
 <li>功能：通过降低逻辑级别减少来进行一般时序优化，以牺牲面积为代价。</li>
 <li>特点：平衡时序和功耗优化，适用于希望在功耗和时序之间取得平衡的设计。</li>
 </ul>
-<h4 id="flatten-hierarchy"><a href="#flatten-hierarchy" class="headerlink" title="-flatten_hierarchy"></a>-flatten_hierarchy</h4><ul>
+<h3 id="flatten-hierarchy"><a href="#flatten-hierarchy" class="headerlink" title="-flatten_hierarchy"></a>-flatten_hierarchy</h3><ul>
 <li>确定Vivado合成如何控制层次结构。</li>
 <li>-full   :指示工具将层次结构完全平坦化，只留下顶层。</li>
 <li>-rebuild:设置后，rebuild允许合成工具平铺层次结构，执行合成，然后基于原始RTL重建层次结构。<br>  该值允许跨边界优化的QoR优势，最终层次结构与RTL类似，以便于分析。</li>
 </ul>
-<h4 id="retiming"><a href="#retiming" class="headerlink" title="-retiming"></a>-retiming</h4><ul>
+<h3 id="retiming"><a href="#retiming" class="headerlink" title="-retiming"></a>-retiming</h3><ul>
 <li>优化电路性能，特别是针对同一时钟域内的顺序路径。具体来说，这个布尔选项可以通过在组合逻辑门或查找表 (LUT) 之间自动移动寄存器（寄存器平衡），来改善电路性能。它保持电路的原始行为和延迟，不需要对RTL（寄存器传输级）源代码进行任何更改。</li>
 </ul>
-<h4 id="keep-equ-reg"><a href="#keep-equ-reg" class="headerlink" title="-keep_equ_reg"></a>-keep_equ_reg</h4><ul>
+<h3 id="keep-equ-reg"><a href="#keep-equ-reg" class="headerlink" title="-keep_equ_reg"></a>-keep_equ_reg</h3><ul>
 <li>防止合并具有相同输入逻辑的寄存器。并相同输入逻辑的寄存器可以带来资源节省和功耗降低，但可能带来的时序问题和对调试的影响。</li>
 </ul>
-<h4 id="resource-sharing"><a href="#resource-sharing" class="headerlink" title="-resource_sharing"></a>-resource_sharing</h4><ul>
+<h3 id="resource-sharing"><a href="#resource-sharing" class="headerlink" title="-resource_sharing"></a>-resource_sharing</h3><ul>
 <li>设置不同信号之间算术运算符的共享。</li>
 <li>auto：根据设计的时序情况自动决定是否进行资源共享。如果设计时序允许，工具会自动启用资源共享，以便在不影响时序的前提下，优化资源利用。</li>
 <li>on：强制启用算术运算符的资源共享，不考虑时序要求。通过共享资源来减少算术运算符的数量，从而节省芯片面积和功耗。</li>
 <li>off：不进行资源共享。每个信号保留独立的算术运算符，不共享资源，可能会导致更高的资源使用和功耗，但可以避免潜在的时序问题。</li>
 </ul>
-<h4 id="no-lc"><a href="#no-lc" class="headerlink" title="-no_lc"></a>-no_lc</h4><ul>
+<h3 id="no-lc"><a href="#no-lc" class="headerlink" title="-no_lc"></a>-no_lc</h3><ul>
 <li>选中此选项时，关闭LUT合并。</li>
 <li>关闭LUT组合可能会导致更多的LUT被使用，从而增加资源消耗。在某些情况下，关闭LUT组合可能会影响时序，因为组合LUT通常可以减少逻辑级数，改善时序路径。对于某些设计者来说，关闭LUT组合可以提供更高的设计可控性，使他们能够更精细地控制电路行为。</li>
 </ul>
-<h4 id="no-timing-driven"><a href="#no-timing-driven" class="headerlink" title="-no_timing_driven"></a>-no_timing_driven</h4><ul>
+<h3 id="no-timing-driven"><a href="#no-timing-driven" class="headerlink" title="-no_timing_driven"></a>-no_timing_driven</h3><ul>
 <li>不考虑时序影响，减少综合时间在早期设计阶段，快速生成原型以进行功能验证时，可以使用此选项来加快合成速度。</li>
 <li>可以快速估算资源利用情况。在某些调试和验证阶段，可以暂时禁用时序驱动合成，以便快速迭代测试设计修改。</li>
 </ul>
-<h4 id="sfcu"><a href="#sfcu" class="headerlink" title="-sfcu"></a>-sfcu</h4><ul>
+<h3 id="sfcu"><a href="#sfcu" class="headerlink" title="-sfcu"></a>-sfcu</h3><ul>
 <li>在单文件编译单元模式下运行合成。单文件编译单元模式可能提供更多的全局优化机会，因为综合工具可以看到所有源文件中的全部设计内容，从而进行更有效的优化。处理整个设计的综合可能会需要更多的电脑内存以及编译时间。</li>
 </ul>
-<h2 id="布局布线-Implementation"><a href="#布局布线-Implementation" class="headerlink" title="布局布线 (Implementation)"></a>布局布线 (Implementation)</h2><blockquote>
+<h1 id="布局布线-Implementation"><a href="#布局布线-Implementation" class="headerlink" title="布局布线 (Implementation)"></a>布局布线 (Implementation)</h1><blockquote>
 <p>参考: UG904 Vivado Design Suite User Guide : Implementation</p>
 </blockquote>
-<h3 id="Opt-Design"><a href="#Opt-Design" class="headerlink" title="Opt Design"></a>Opt Design</h3><p>优化逻辑设计，使其更容易适应目标Xilinx设备。</p>
-<h4 id="directive-1"><a href="#directive-1" class="headerlink" title="-directive"></a>-directive</h4><ol>
+<h2 id="Opt-Design"><a href="#Opt-Design" class="headerlink" title="Opt Design"></a>Opt Design</h2><p>优化逻辑设计，使其更容易适应目标Xilinx设备。</p>
+<h3 id="directive"><a href="#directive" class="headerlink" title="-directive"></a>-directive</h3><ol>
 <li><strong>Explore</strong></li>
 </ol>
 <ul>
@@ -350,9 +341,9 @@
 <li>特点：使用工具的默认优化设置，适用于不需要特殊优化的设计。提供一个平衡的优化方案，适合大多数设计需求。</li>
 </ul>
 <p>从指令表上看 ExploreSequentialArea 最为优化最为全面和激进，其他选项是专门优化某方面的。</p>
-<h3 id="Power-Opt-Design-optional"><a href="#Power-Opt-Design-optional" class="headerlink" title="Power Opt Design (optional):"></a>Power Opt Design (optional):</h3><p>优化设计元素，降低目标赛灵思器件的功耗需求。</p>
-<h3 id="Place-Design"><a href="#Place-Design" class="headerlink" title="Place Design"></a>Place Design</h3><p>将设计放置到目标Xilinx设备上，并执行扇出复制以改善时序</p>
-<h4 id="directive-2"><a href="#directive-2" class="headerlink" title="-directive"></a>-directive</h4><ol>
+<h2 id="Power-Opt-Design-optional"><a href="#Power-Opt-Design-optional" class="headerlink" title="Power Opt Design (optional):"></a>Power Opt Design (optional):</h2><p>优化设计元素，降低目标赛灵思器件的功耗需求。</p>
+<h2 id="Place-Design"><a href="#Place-Design" class="headerlink" title="Place Design"></a>Place Design</h2><p>将设计放置到目标Xilinx设备上，并执行扇出复制以改善时序</p>
+<h3 id="directive-1"><a href="#directive-1" class="headerlink" title="-directive"></a>-directive</h3><ol>
 <li><strong>Explore</strong></li>
 </ol>
 <ul>
@@ -445,15 +436,15 @@
 <li>功能：使用默认设置运行place_design。</li>
 <li>特点：提供一个平衡的优化方案，适合大多数设计需求。</li>
 </ul>
-<h4 id="More-Options"><a href="#More-Options" class="headerlink" title="More Options"></a>More Options</h4><ol start="13">
+<h3 id="More-Options"><a href="#More-Options" class="headerlink" title="More Options"></a>More Options</h3><ol start="13">
 <li>-post_place_opt<blockquote>
 <p>Post placement optimization is a placement optimization that can potentially improve critical<br>path timing at the expense of additional run time. The optimization is performed on a fully placed<br>design with timing violations. For each of the top few critical paths, the placer tries moving<br>critical cells to improve delay and commits new cell placements if they improve estimated delay.<br>For designs with longer run times and relatively more critical paths, these placement passes<br>might further improve timing.</p>
 </blockquote>
 </li>
 </ol>
 <p>选项post_place_opt是一种放置优化，它可以以额外的运行时间为代价，潜在地改善关键路径计时。优化是在有时间冲突的完全放置设计上进行的。对于前几个关键路径中的每一个，放置器尝试移动关键单元以改善延迟，如果它们改善了估计延迟，则提交新的单元放置。<br>对于具有较长运行时间和相对更关键路径的设计，这些放置通道可能会进一步改善时间。</p>
-<h3 id="Phys-Opt-Design-optional"><a href="#Phys-Opt-Design-optional" class="headerlink" title="Phys Opt Design (optional)"></a>Phys Opt Design (optional)</h3><p>在放置后模式中，优化基于基于单元放置的时间估计。<br>物理优化会自动合并由于逻辑优化而产生的网表更改，并根据需要放置单元。<br>在后路由模式下，根据实际的路由延迟进行优化。除了根据逻辑变化和放置单元自动更新网表外，物理优化还可以根据需要自动更新路由。</p>
-<h4 id="directive-3"><a href="#directive-3" class="headerlink" title="-directive"></a>-directive</h4><ol>
+<h2 id="Phys-Opt-Design-optional"><a href="#Phys-Opt-Design-optional" class="headerlink" title="Phys Opt Design (optional)"></a>Phys Opt Design (optional)</h2><p>在放置后模式中，优化基于基于单元放置的时间估计。<br>物理优化会自动合并由于逻辑优化而产生的网表更改，并根据需要放置单元。<br>在后路由模式下，根据实际的路由延迟进行优化。除了根据逻辑变化和放置单元自动更新网表外，物理优化还可以根据需要自动更新路由。</p>
+<h3 id="directive-2"><a href="#directive-2" class="headerlink" title="-directive"></a>-directive</h3><ol>
 <li><strong>Explore</strong></li>
 </ol>
 <ul>
@@ -505,8 +496,8 @@
 <ul>
 <li>功能：执行更激进的复制、DSP和块RAM优化，并启用寄存器重定时</li>
 </ul>
-<h3 id="Route-Design"><a href="#Route-Design" class="headerlink" title="Route Design"></a>Route Design</h3><p>将设计路由到目标Xilinx设备。</p>
-<h4 id="directive-4"><a href="#directive-4" class="headerlink" title="-directive"></a>-directive</h4><ol>
+<h2 id="Route-Design"><a href="#Route-Design" class="headerlink" title="Route Design"></a>Route Design</h2><p>将设计路由到目标Xilinx设备。</p>
+<h3 id="directive-3"><a href="#directive-3" class="headerlink" title="-directive"></a>-directive</h3><ol>
 <li><strong>Explore</strong></li>
 </ol>
 <ul>
@@ -562,10 +553,12 @@
 <li>功能：绝对最快的编译时间，非时序驱动，仅执行使设计合法所需的最小操作。</li>
 <li>特点：非常快速的编译，但不考虑时序优化。适用于对时序要求不高的设计或快速原型开发。</li>
 </ul>
-<h3 id="Write-Bitstream"><a href="#Write-Bitstream" class="headerlink" title="Write Bitstream"></a>Write Bitstream</h3><p>生成用于Xilinx设备配置的比特流。</p>
-<hr>
+<h2 id="Write-Bitstream"><a href="#Write-Bitstream" class="headerlink" title="Write Bitstream"></a>Write Bitstream</h2><p>生成用于Xilinx设备配置的比特流。</p>
+<p>[toc]</p>
+<h1 id="约束-1"><a href="#约束-1" class="headerlink" title="约束"></a>约束</h1><h2 id="时序约束"><a href="#时序约束" class="headerlink" title="时序约束"></a>时序约束</h2><h3 id="主时钟"><a href="#主时钟" class="headerlink" title="主时钟"></a>主时钟</h3><p>主时钟是通过输入端口或千兆收发器输出引脚(例如，恢复时钟)进入设计的板时钟。主时钟只能通过<code>create_clock</code>命令定义。</p>
+<h2 id="物理约束"><a href="#物理约束" class="headerlink" title="物理约束"></a>物理约束</h2><hr>
 <p>施工中….</p>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://yuhengwei2001.github.io">Rain</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://yuhengwei2001.github.io/article/VivadoUserGuide.html">https://yuhengwei2001.github.io/article/VivadoUserGuide.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://yuhengwei2001.github.io" target="_blank">Rain的小破站</a>！</span></div></div><div class="tag_share"><div class="post_share"></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%BC%E5%90%88-Synthesis"><span class="toc-number">1.</span> <span class="toc-text">综合 (Synthesis)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%BC%E5%90%88%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.1.</span> <span class="toc-text">综合设置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#directive"><span class="toc-number">1.1.1.</span> <span class="toc-text">-directive</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#flatten-hierarchy"><span class="toc-number">1.1.2.</span> <span class="toc-text">-flatten_hierarchy</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#retiming"><span class="toc-number">1.1.3.</span> <span class="toc-text">-retiming</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#keep-equ-reg"><span class="toc-number">1.1.4.</span> <span class="toc-text">-keep_equ_reg</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#resource-sharing"><span class="toc-number">1.1.5.</span> <span class="toc-text">-resource_sharing</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#no-lc"><span class="toc-number">1.1.6.</span> <span class="toc-text">-no_lc</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#no-timing-driven"><span class="toc-number">1.1.7.</span> <span class="toc-text">-no_timing_driven</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#sfcu"><span class="toc-number">1.1.8.</span> <span class="toc-text">-sfcu</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%83%E5%B1%80%E5%B8%83%E7%BA%BF-Implementation"><span class="toc-number">2.</span> <span class="toc-text">布局布线 (Implementation)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Opt-Design"><span class="toc-number">2.1.</span> <span class="toc-text">Opt Design</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#directive-1"><span class="toc-number">2.1.1.</span> <span class="toc-text">-directive</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Power-Opt-Design-optional"><span class="toc-number">2.2.</span> <span class="toc-text">Power Opt Design (optional):</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Place-Design"><span class="toc-number">2.3.</span> <span class="toc-text">Place Design</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#directive-2"><span class="toc-number">2.3.1.</span> <span class="toc-text">-directive</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#More-Options"><span class="toc-number">2.3.2.</span> <span class="toc-text">More Options</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Phys-Opt-Design-optional"><span class="toc-number">2.4.</span> <span class="toc-text">Phys Opt Design (optional)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#directive-3"><span class="toc-number">2.4.1.</span> <span class="toc-text">-directive</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Route-Design"><span class="toc-number">2.5.</span> <span class="toc-text">Route Design</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#directive-4"><span class="toc-number">2.5.1.</span> <span class="toc-text">-directive</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Write-Bitstream"><span class="toc-number">2.6.</span> <span class="toc-text">Write Bitstream</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background: #000000"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2024 By Rain</div><div class="footer_custom_text"><a href="https://yuhengwei2001.github.io">人生一世，草生一春。来如风雨，去似微尘。</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><script>function panguFn () {
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://yuhengwei2001.github.io">Rain</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://yuhengwei2001.github.io/article/VivadoUserGuide.html">https://yuhengwei2001.github.io/article/VivadoUserGuide.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://yuhengwei2001.github.io" target="_blank">Rain的小破站</a>！</span></div></div><div class="tag_share"><div class="post_share"></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%BC%E5%90%88-Synthesis"><span class="toc-number">1.</span> <span class="toc-text">综合 (Synthesis)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%BC%E5%90%88%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.1.</span> <span class="toc-text">综合设置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%A6%E6%9D%9F"><span class="toc-number">1.1.1.</span> <span class="toc-text">约束</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%BC%E5%90%88%E7%AD%96%E7%95%A5"><span class="toc-number">1.1.2.</span> <span class="toc-text">综合策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#flatten-hierarchy"><span class="toc-number">1.1.3.</span> <span class="toc-text">-flatten_hierarchy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#retiming"><span class="toc-number">1.1.4.</span> <span class="toc-text">-retiming</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#keep-equ-reg"><span class="toc-number">1.1.5.</span> <span class="toc-text">-keep_equ_reg</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#resource-sharing"><span class="toc-number">1.1.6.</span> <span class="toc-text">-resource_sharing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#no-lc"><span class="toc-number">1.1.7.</span> <span class="toc-text">-no_lc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#no-timing-driven"><span class="toc-number">1.1.8.</span> <span class="toc-text">-no_timing_driven</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sfcu"><span class="toc-number">1.1.9.</span> <span class="toc-text">-sfcu</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%83%E5%B1%80%E5%B8%83%E7%BA%BF-Implementation"><span class="toc-number">2.</span> <span class="toc-text">布局布线 (Implementation)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Opt-Design"><span class="toc-number">2.1.</span> <span class="toc-text">Opt Design</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#directive"><span class="toc-number">2.1.1.</span> <span class="toc-text">-directive</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Power-Opt-Design-optional"><span class="toc-number">2.2.</span> <span class="toc-text">Power Opt Design (optional):</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Place-Design"><span class="toc-number">2.3.</span> <span class="toc-text">Place Design</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#directive-1"><span class="toc-number">2.3.1.</span> <span class="toc-text">-directive</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#More-Options"><span class="toc-number">2.3.2.</span> <span class="toc-text">More Options</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Phys-Opt-Design-optional"><span class="toc-number">2.4.</span> <span class="toc-text">Phys Opt Design (optional)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#directive-2"><span class="toc-number">2.4.1.</span> <span class="toc-text">-directive</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Route-Design"><span class="toc-number">2.5.</span> <span class="toc-text">Route Design</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#directive-3"><span class="toc-number">2.5.1.</span> <span class="toc-text">-directive</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Write-Bitstream"><span class="toc-number">2.6.</span> <span class="toc-text">Write Bitstream</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%A6%E6%9D%9F-1"><span class="toc-number">3.</span> <span class="toc-text">约束</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%B6%E5%BA%8F%E7%BA%A6%E6%9D%9F"><span class="toc-number">3.1.</span> <span class="toc-text">时序约束</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E6%97%B6%E9%92%9F"><span class="toc-number">3.1.1.</span> <span class="toc-text">主时钟</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%A9%E7%90%86%E7%BA%A6%E6%9D%9F"><span class="toc-number">3.2.</span> <span class="toc-text">物理约束</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background: #000000"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2024 By Rain</div><div class="footer_custom_text"><a href="https://yuhengwei2001.github.io">人生一世，草生一春。来如风雨，去似微尘。</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><script>function panguFn () {
   if (typeof pangu === 'object') pangu.autoSpacingPage()
   else {
     getScript('https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js')
